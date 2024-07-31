@@ -1,5 +1,4 @@
 # This file is intended for running the game loop.
-# This is a test.
 
 import pygame
 
@@ -13,7 +12,7 @@ def main() -> None:
     
     pygame.init()
     window = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('L1DIT Basic Shooter')
+    pygame.display.set_caption(settings.WINDOW_CAPTION)
     clock = pygame.time.Clock()
     running: bool = True
 
@@ -23,6 +22,8 @@ def main() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+        pygame.quit()
 
 
 if __name__ == "__main__":
