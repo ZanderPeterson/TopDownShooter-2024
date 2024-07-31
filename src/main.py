@@ -4,6 +4,7 @@ import pygame
 
 import src.settings as settings
 
+from .game import Game
 
 def main() -> None:
     width: int = settings.WINDOW_WIDTH
@@ -12,6 +13,7 @@ def main() -> None:
     
     pygame.init()
     window = pygame.display.set_mode((width, height))
+    game = Game(window)
     pygame.display.set_caption(settings.WINDOW_CAPTION)
     clock = pygame.time.Clock()
     running: bool = True
@@ -22,9 +24,13 @@ def main() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            else:
+                game.handle_event(event)
 
-        pygame.quit()
+        game.update()
+        game.render()
 
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
