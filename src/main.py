@@ -2,19 +2,18 @@
 
 import pygame
 
-import src.settings as settings
-
+from .settings import Settings
 from .game import Game
 
 def main() -> None:
-    width: int = settings.WINDOW_WIDTH
-    height: int = settings.WINDOW_HEIGHT
-    FPS: int = settings.FPS
+    width: int = Settings.WINDOW_WIDTH
+    height: int = Settings.WINDOW_HEIGHT
+    FPS: int = Settings.FPS
     
     pygame.init()
     window = pygame.display.set_mode((width, height))
     game = Game(window)
-    pygame.display.set_caption(settings.WINDOW_CAPTION)
+    pygame.display.set_caption(Settings.WINDOW_CAPTION)
     clock = pygame.time.Clock()
     running: bool = True
 
