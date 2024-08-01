@@ -1,19 +1,23 @@
 # This file is intended for running the game loop.
-# This is a test.
+import sys
+import os
 
 import pygame
 
-import src.settings as settings
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
+from src.game import Game
+from src.settings import Settings
 
 def main() -> None:
-    width: int = settings.WINDOW_WIDTH
-    height: int = settings.WINDOW_HEIGHT
-    FPS: int = settings.FPS
+    width: int = Settings.WINDOW_WIDTH
+    height: int = Settings.WINDOW_HEIGHT
+    FPS: int = Settings.FPS
     
     pygame.init()
     window = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('L1DIT Basic Shooter')
+    game = Game(window)
+    pygame.display.set_caption(Settings.WINDOW_CAPTION)
     clock = pygame.time.Clock()
     running: bool = True
 
@@ -23,7 +27,13 @@ def main() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            else:
+                game.handle_event(event)
 
+        game.update()
+        game.render()
+
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
