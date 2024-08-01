@@ -4,21 +4,23 @@ import pygame
 
 from .game_state import GameState
 
-class MainMenuState(GameState):
-    """A Subclass of GameState intended to handle the Main Menu."""
+
+class PlayGameState(GameState):
 
     def __init__(self, game) -> None:
         super().__init__(game)
 
+        # Initialise all the game entities here
+
     @override
     def enter(self) -> None:
-        print("Entering the Main Menu state.")
+        print("Entering the Play Game state.")
 
     @override
     def exit(self) -> None:
-        print("Exiting the Main Menu state.")
+        print("Exiting the Play Game state.")
 
     @override
     def render(self, window) -> None:
-        window.fill((200, 200, 200))
+        window.fill((0, 0, 0))
         # Main Menu rendering to be done here.
