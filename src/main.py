@@ -1,9 +1,13 @@
 # This file is intended for running the game loop.
+import sys
+import os
 
 import pygame
 
-from .settings import Settings
-from .game import Game
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+from src.game import Game
+from src.settings import Settings
 
 def main() -> None:
     width: int = Settings.WINDOW_WIDTH

@@ -27,4 +27,4 @@ class Game():
         self.current_state.update()
 
     def render(self) -> None:
-        self.current_state.render(self.screen)
+        self.current_state.render(self.window)

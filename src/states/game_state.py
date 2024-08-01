@@ -20,6 +20,6 @@ class GameState():
         """Called whenever rendering the state."""
         pass
 
-    def handle_event(self) -> None:
+    def handle_event(self, event) -> None:
         """Called whenever an event needs to be handled."""
         pass
