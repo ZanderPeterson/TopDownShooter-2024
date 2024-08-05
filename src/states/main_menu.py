@@ -20,5 +20,5 @@ class MainMenuState(GameState):
 
     @override
     def render(self, window) -> None:
-        window.fill((200, 200, 200))
+        window.fill((255, 255, 255))
         # Main Menu rendering to be done here.
