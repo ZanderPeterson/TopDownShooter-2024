@@ -20,5 +20,12 @@ class MainMenuState(GameState):
 
     @override
     def render(self, window) -> None:
-        window.fill((0, 0, 0))
+        window.fill((255, 255, 255))
         # Main Menu rendering to be done here.
+
+    @override
+    def handle_event(self, event) -> None | str:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            print("Spacebar hit")
+            return "PlayGame"
+        return None
