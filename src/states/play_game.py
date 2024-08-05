@@ -25,8 +25,4 @@ class PlayGameState(GameState):
         window.fill((0, 0, 0))
         # Game Entity rendering to be done here.
 
-    @override
-    def handle_event(self, event) -> None | str:
-        if event.type == pygame.KEYDOWN and event.key == K_SPACE:
-            return "PlayGame"
-        return None
+
