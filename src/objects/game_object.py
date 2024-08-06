@@ -15,7 +15,7 @@ class GameObject():
                  image: str = "assets/images/missing_texture_32x32") -> None:
         self.tag: str | None = tag
         self.position: coords = start_pos
-        self.rotation: rotation
+        self.rotation: float = rotation
         self.image: str = image
 
     def set_position(self, position: coords = (0, 0)) -> None:
@@ -25,3 +25,11 @@ class GameObject():
         self.position = (self.position[0] + position[0],
                          self.position[1] + position[1])
         return self.position
+
+    def rotate_left_by(self, rotate_by: float) -> float:
+        self.rotation = self.rotate - rotate_by
+        return self.rotation
+
+    def rotate_right_by(self, rotate_by: float) -> float:
+        self.rotation = self.rotate + rotate_by
+        return self.rotation
