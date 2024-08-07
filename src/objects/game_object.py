@@ -1,3 +1,4 @@
+import os
 from typing import Tuple, TypeAlias
 
 import pygame
@@ -12,11 +13,15 @@ class GameObject():
                  tag: str | None = None,
                  start_pos: coords = (0, 0),
                  rotation: float = 0,
-                 image: str = "assets/images/missing_texture_32x32") -> None:
+                 image: str | None = None) -> None:
         self.tag: str | None = tag #When dealing with collisions, this should help.
         self.position: coords = start_pos #The object's position.
         self.rotation: float = rotation #The object's rotation. Rotation measured in Radians (NOT DEGREES)
         self.image: str = image #A directory to the image associated with this object.
+
+        if not image:
+            image = os.path.join("assets/images", "missing_texture_32x32")
+        self.image: str = image
 
     def set_position(self, position: coords = (0, 0)) -> None:
         """Sets the Object's position."""
