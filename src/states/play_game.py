@@ -3,14 +3,17 @@ from typing import override
 import pygame
 
 from .game_state import GameState
+from src.objects.game_object import GameObject
 
 
 class PlayGameState(GameState):
 
     def __init__(self, game) -> None:
         super().__init__(game)
+        self.entities: list = []
 
-        # Initialise all the game entities here
+        my_object = GameObject()
+        self.entities.append(my_object)
 
     @override
     def enter(self) -> None:
@@ -24,5 +27,3 @@ class PlayGameState(GameState):
     def render(self, window) -> None:
         window.fill((0, 0, 0))
         # Game Entity rendering to be done here.
-
-

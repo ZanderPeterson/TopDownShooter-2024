@@ -1,4 +1,5 @@
 import os
+from maths import degrees
 from typing import Tuple, TypeAlias
 
 import pygame
@@ -17,11 +18,22 @@ class GameObject():
         self.tag: str | None = tag #When dealing with collisions, this should help.
         self.position: coords = start_pos #The object's position.
         self.rotation: float = rotation #The object's rotation. Rotation measured in Radians (NOT DEGREES)
-        self.image: str = image #A directory to the image associated with this object.
 
         if not image:
             image = os.path.join("assets/images", "missing_texture_32x32")
-        self.image: str = image
+        self.image: str = image #A directory to the image associated with this object.
+        self.loaded_image = pygame.image.load(self.image)
+
+    def render_image(self):
+        """Returns a rendered image that can be blitted to the screen."""
+        to_return = self.loaded_image
+
+        #Scales the image
+        #NEED TO IMPLEMENT
+
+        #Rotates the image
+        to_return = pygame.transform.rotate(to_return, degrees(self.rotation))
+        return to_return
 
     def set_position(self, position: coords = (0, 0)) -> None:
         """Sets the Object's position."""
