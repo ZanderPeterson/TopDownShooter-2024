@@ -32,6 +32,7 @@ def main() -> None:
 
         game.update()
         game.render()
+        pygame.display.flip()
 
     pygame.quit()
 

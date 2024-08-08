@@ -26,4 +26,7 @@ class PlayGameState(GameState):
     @override
     def render(self, window) -> None:
         window.fill((0, 0, 0))
-        # Game Entity rendering to be done here.
+
+        #Loops through all the entities and renders them to the screen.
+        for entity in self.entities:
+            window.blit(entity.render_image(), entity.position)

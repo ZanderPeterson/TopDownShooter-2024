@@ -1,5 +1,5 @@
 import os
-from maths import degrees
+from math import degrees
 from typing import Tuple, TypeAlias
 
 import pygame
@@ -20,7 +20,7 @@ class GameObject():
         self.rotation: float = rotation #The object's rotation. Rotation measured in Radians (NOT DEGREES)
 
         if not image:
-            image = os.path.join("assets/images", "missing_texture_32x32")
+            image = os.path.join(os.path.join("assets", "images"), "missing_texture_32x32.png")
         self.image: str = image #A directory to the image associated with this object.
         self.loaded_image = pygame.image.load(self.image)
 
