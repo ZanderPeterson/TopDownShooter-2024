@@ -24,7 +24,7 @@ class PlayGameState(GameState):
 
     @override
     def update(self) -> None:
-        self.entities["my_object"].set_posiion()
+        self.entities["my_object"].set_position()
 
     @override
     def render(self, window) -> None:
