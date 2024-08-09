@@ -22,7 +22,7 @@ class GameObject():
         if not image:
             image = os.path.join(os.path.join("assets", "images"), "missing_texture_32x32.png")
         self.image: str = image #A directory to the image associated with this object.
-        self.loaded_image = pygame.image.load(self.image)
+        self.loaded_image = pygame.image.load(self.image).convert_alpha()
 
     def render_image(self):
         """Returns a rendered image that can be blitted to the screen."""
@@ -30,6 +30,7 @@ class GameObject():
 
         #Scales the image
         #NEED TO IMPLEMENT
+        #...eventually. If it is needed. However, I currently fail to believe that image scaling is a requirement.
 
         #Rotates the image
         to_return = pygame.transform.rotate(to_return, degrees(self.rotation))

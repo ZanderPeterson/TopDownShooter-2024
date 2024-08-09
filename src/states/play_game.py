@@ -1,3 +1,4 @@
+from math import pi
 from typing import Dict, override
 
 import pygame
@@ -12,7 +13,7 @@ class PlayGameState(GameState):
         super().__init__(game)
         self.entities: Dict[str, GameObject] = {}
 
-        self.entities["my_object"] = GameObject()
+        self.entities["my_object"] = GameObject(rotation=pi/8)
 
     @override
     def enter(self) -> None:
@@ -24,7 +25,10 @@ class PlayGameState(GameState):
 
     @override
     def update(self) -> None:
-        self.entities["my_object"].set_position()
+        #self.entities["my_object"].set_position()
+        #self.entities["my_object"].set_position((1, 60))
+        #self.entities["my_object"].move_by_amount((1, 1))
+        pass
 
     @override
     def render(self, window) -> None:
