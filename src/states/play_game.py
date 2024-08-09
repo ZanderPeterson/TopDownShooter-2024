@@ -1,4 +1,4 @@
-from typing import override
+from typing import Dict, override
 
 import pygame
 
@@ -10,10 +10,9 @@ class PlayGameState(GameState):
 
     def __init__(self, game) -> None:
         super().__init__(game)
-        self.entities: list = []
+        self.entities: Dict[str, GameObject] = {}
 
-        my_object = GameObject()
-        self.entities.append(my_object)
+        self.entities["my_object"] = GameObject()
 
     @override
     def enter(self) -> None:
@@ -24,9 +23,13 @@ class PlayGameState(GameState):
         print("Exiting the Play Game state.")
 
     @override
+    def update(self) -> None:
+        self.entities["my_object"].set_posiion()
+
+    @override
     def render(self, window) -> None:
         window.fill((0, 0, 0))
 
         #Loops through all the entities and renders them to the screen.
-        for entity in self.entities:
+        for entity in self.entities.values():
             window.blit(entity.render_image(), entity.position)
