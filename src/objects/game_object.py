@@ -46,12 +46,7 @@ class GameObject():
                          self.position[1] + position[1])
         return self.position
 
-    def rotate_left_by(self, rotate_by: float) -> float:
-        """Rotates the object left. Returns new rotation."""
-        self.rotation = self.rotate - rotate_by
-        return self.rotation
-
-    def rotate_right_by(self, rotate_by: float) -> float:
-        """Rotates the object right. Returns new rotation."""
-        self.rotation = self.rotate + rotate_by
+    def rotate_by(self, rotate_by: float) -> float:
+        """Rotates the object counterclockwise. Returns new rotation."""
+        self.rotation = self.rotation + rotate_by
         return self.rotation
