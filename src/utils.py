@@ -13,5 +13,6 @@ def rotate_around_centre(width: float, height: float, rotation: float) -> coords
     """
     #'1' is just a hardcoded math.sin(math.pi/2).
     A: float = math.sin(math.pi/2 - rotation)/(1/height) + math.sin(rotation)/(1/width)
-    B: float = math.sin(rotation)/(1/height) + math.sin(math.pi/2 - rotation)/(1/height)
+    B: float = math.sin(rotation)/(1/height) + math.sin(math.pi/2 - rotation)/(1/width)
+    print(f"A: {A}, B: {B}")
     return (A/2 - width/2, B/2 - height/2)
