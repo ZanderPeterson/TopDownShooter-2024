@@ -27,7 +27,7 @@ class GameObject():
         self.loaded_image = pygame.image.load(self.image).convert_alpha()
 
         self.img_offset: coords = (0, 0)  # How far to offset the sprite's image to account for rotation.
-        self.img_size: Tuple[float, float] = self.image.get_size()
+        self.img_size: Tuple[float, float] = self.loaded_image.get_size()
 
         self.set_rotation()
 
@@ -53,8 +53,11 @@ class GameObject():
                          self.position[1] + position[1])
         return self.position
 
-    def set_rotation(self, rotation: float = self.rotation):
+    def set_rotation(self, rotation: float | None = None):
         """Sets the rotation of the sprite, and adjusts the img_offset accordingly."""
+        if not rotation:
+            rotation = self.rotation
+
         self.rotation = float(rotation)
         self.img_offset = rotate_around_centre(self.img_size[0], self.img_size[1], rotation)
 
