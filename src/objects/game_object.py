@@ -4,6 +4,8 @@ from typing import Tuple, TypeAlias
 
 import pygame
 
+from src.utils import rotate_around_centre
+
 coords: TypeAlias = Tuple[float, float]
 
 
@@ -23,6 +25,11 @@ class GameObject():
             image = os.path.join(os.path.join("assets", "images"), "missing_texture_32x32.png")
         self.image: str = image #A directory to the image associated with this object.
         self.loaded_image = pygame.image.load(self.image).convert_alpha()
+
+        self.img_offset: coords = (0, 0)  # How far to offset the sprite's image to account for rotation.
+        self.img_size: Tuple[float, float] = self.image.get_size()
+
+        self.set_rotation()
 
     def render_image(self):
         """Returns a rendered image that can be blitted to the screen."""
@@ -46,7 +53,12 @@ class GameObject():
                          self.position[1] + position[1])
         return self.position
 
+    def set_rotation(self, rotation: float = self.rotation):
+        """Sets the rotation of the sprite, and adjusts the img_offset accordingly."""
+        self.rotation = float(rotation)
+        self.img_offset = rotate_around_centre(self.img_size[0], self.img_size[1], rotation)
+
     def rotate_by(self, rotate_by: float) -> float:
         """Rotates the object counterclockwise. Returns new rotation."""
-        self.rotation = self.rotation + rotate_by
+        self.set_rotation(self.rotation + rotate_by)
         return self.rotation
