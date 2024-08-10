@@ -43,6 +43,11 @@ class GameObject():
         to_return = pygame.transform.rotate(to_return, degrees(self.rotation))
         return to_return
 
+    def get_image_position(self):
+        """Returns the position that the image needs to be drawn at."""
+        return (self.position[0] + self.img_offset[0],
+                self.position[1] + self.img_offset[1])
+
     def set_position(self, position: coords = (0, 0)) -> None:
         """Sets the Object's position."""
         self.position = (float(position[0]), float(position[1]))
@@ -60,6 +65,7 @@ class GameObject():
 
         self.rotation = float(rotation)
         self.img_offset = rotate_around_centre(self.img_size[0], self.img_size[1], rotation)
+        print(self.img_offset)
 
     def rotate_by(self, rotate_by: float) -> float:
         """Rotates the object counterclockwise. Returns new rotation."""

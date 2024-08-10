@@ -36,4 +36,4 @@ class PlayGameState(GameState):
 
         #Loops through all the entities and renders them to the screen.
         for entity in self.entities.values():
-            window.blit(entity.render_image(), entity.position + entity.img_offset)
+            window.blit(entity.render_image(), entity.get_image_position())
