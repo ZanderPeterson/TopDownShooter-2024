@@ -29,8 +29,6 @@ class GameObject():
         self.img_offset: coords = (0, 0)  # How far to offset the sprite's image to account for rotation.
         self.img_size: Tuple[float, float] = self.loaded_image.get_size()
 
-        self.set_rotation()
-
     def render_image(self):
         """Returns a rendered image that can be blitted to the screen."""
         to_return = self.loaded_image
