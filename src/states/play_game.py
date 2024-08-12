@@ -5,6 +5,7 @@ import pygame
 
 from .game_state import GameState
 from src.objects.game_object import GameObject
+from src.objects.player import PlayerObject
 
 
 class PlayGameState(GameState):
