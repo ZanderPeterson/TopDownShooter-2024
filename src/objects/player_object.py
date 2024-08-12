@@ -1,6 +1,10 @@
+from typing import Tuple, TypeAlias
+
 import pygame
 
 from .game_object import GameObject
+
+coords: TypeAlias = Tuple[float, float]
 
 
 class PlayerObject(GameObject):
