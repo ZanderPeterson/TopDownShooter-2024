@@ -4,8 +4,6 @@ from typing import Tuple, TypeAlias
 
 import pygame
 
-from src.utils import rotate_around_centre
-
 coords: TypeAlias = Tuple[float, float]
 
 
@@ -22,7 +20,9 @@ class GameObject():
         self.rotation: float = rotation #The object's rotation. Rotation measured in Radians (NOT DEGREES)
 
         if not image:
-            image = os.path.join(os.path.join("assets", "images"), "missing_texture_32x32.png")
+            image = "missing_texture_32x32.png"
+        image = os.path.join(os.path.join("assets", "images"), image)
+
         self.image: str = image #A directory to the image associated with this object.
         self.loaded_image = pygame.image.load(self.image).convert_alpha()
 
@@ -41,6 +41,8 @@ class GameObject():
 
         #Rotates the image
         to_return = pygame.transform.rotate(to_return, degrees(self.rotation))
+        self.img_offset = (self.img_size[0]/2 - to_return.get_size()[0]/2,
+                           self.img_size[1]/2 - to_return.get_size()[1]/2)
         return to_return
 
     def get_image_position(self):
@@ -59,13 +61,8 @@ class GameObject():
         return self.position
 
     def set_rotation(self, rotation: float | None = None):
-        """Sets the rotation of the sprite, and adjusts the img_offset accordingly."""
-        if not rotation:
-            rotation = self.rotation
-
+        """Sets the rotation of the sprite."""
         self.rotation = float(rotation)
-        self.img_offset = rotate_around_centre(self.img_size[0], self.img_size[1], rotation)
-        print(self.img_offset)
 
     def rotate_by(self, rotate_by: float) -> float:
         """Rotates the object counterclockwise. Returns new rotation."""

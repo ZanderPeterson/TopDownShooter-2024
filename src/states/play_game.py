@@ -13,7 +13,7 @@ class PlayGameState(GameState):
         super().__init__(game)
         self.entities: Dict[str, GameObject] = {}
 
-        self.entities["my_object"] = GameObject(rotation=pi/8)
+        self.entities["my_object"] = GameObject()
 
     @override
     def enter(self) -> None:
@@ -25,10 +25,7 @@ class PlayGameState(GameState):
 
     @override
     def update(self) -> None:
-        #self.entities["my_object"].set_position()
-        #self.entities["my_object"].set_position((1, 60))
-        #self.entities["my_object"].move_by_amount((1, 1))
-        pass
+        self.entities["my_object"].rotate_by(0.01)
 
     @override
     def render(self, window) -> None:
@@ -36,4 +33,5 @@ class PlayGameState(GameState):
 
         #Loops through all the entities and renders them to the screen.
         for entity in self.entities.values():
+            #print(entity.get_image_position())
             window.blit(entity.render_image(), entity.get_image_position())
