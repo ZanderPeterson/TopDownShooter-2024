@@ -26,6 +26,9 @@ class PlayGameState(GameState):
     def enter(self) -> None:
         print("Entering the Play Game state.")
 
+        for key in self.track_keys.keys():
+            self.track_keys[key] = False
+
     @override
     def exit(self) -> None:
         print("Exiting the Play Game state.")
