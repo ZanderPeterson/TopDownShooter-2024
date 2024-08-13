@@ -4,6 +4,7 @@ import os
 
 import pygame
 
+#Since main.py is being run, but we need to access assets outside of src, we need this.
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from src.game import Game
