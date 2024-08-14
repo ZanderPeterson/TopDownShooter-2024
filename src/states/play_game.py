@@ -35,7 +35,7 @@ class PlayGameState(GameState):
 
     @override
     def update(self) -> None:
-        self.entities["my_object"].rotate_by(0.01)
+        pass
 
     @override
     def render(self, window) -> None:
