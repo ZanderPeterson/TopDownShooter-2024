@@ -1,5 +1,5 @@
 from math import pi
-from typing import Dict, List, override
+from typing import Dict, List, Tuple, override, TypeAlias
 
 import pygame
 
@@ -7,6 +7,8 @@ from .game_state import GameState
 from src.objects.game_object import GameObject
 from src.objects.player_object import PlayerObject
 from src.utils import find_vector_between
+
+Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
 
 
 class PlayGameState(GameState):
@@ -21,7 +23,7 @@ class PlayGameState(GameState):
             pygame.K_d: False,
         }
 
-        self.entities["my_object"] = GameObject()
+        self.entities["player"] = PlayerObject()
 
     @override
     def enter(self) -> None:
@@ -37,7 +39,9 @@ class PlayGameState(GameState):
     @override
     def update(self) -> None:
         mouse_pos = pygame.mouse.get_pos()
-        print(find_vector_between(self.entities["my_object"].centre, mouse_pos))
+        vector_to_cursor: Vector = find_vector_between(self.entities["player"].centre, mouse_pos)
+        self.entities["player"].set_rotation(vector_to_cursor[1])
+
 
     @override
     def render(self, window) -> None:
