@@ -6,6 +6,7 @@ import pygame
 from .game_state import GameState
 from src.objects.game_object import GameObject
 from src.objects.player_object import PlayerObject
+from src.utils import find_vector_between
 
 
 class PlayGameState(GameState):
@@ -35,7 +36,8 @@ class PlayGameState(GameState):
 
     @override
     def update(self) -> None:
-        pass
+        mouse_pos = pygame.mouse.get_pos()
+        print(find_vector_between(self.entities["my_object"].centre, mouse_pos))
 
     @override
     def render(self, window) -> None:
