@@ -6,7 +6,7 @@ import pygame
 from .game_state import GameState
 from src.objects.game_object import GameObject
 from src.objects.player_object import PlayerObject
-from src.utils import find_vector_between
+from src.utils import find_vector_between, move_by_vector
 
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
 
@@ -23,7 +23,7 @@ class PlayGameState(GameState):
             pygame.K_d: False,
         }
 
-        self.entities["player"] = PlayerObject()
+        self.entities["player"] = PlayerObject(start_pos=(300, 300))
 
     @override
     def enter(self) -> None:
@@ -38,10 +38,13 @@ class PlayGameState(GameState):
 
     @override
     def update(self) -> None:
+        FORWARD_SPEED = 2
         mouse_pos = pygame.mouse.get_pos()
         vector_to_cursor: Vector = find_vector_between(self.entities["player"].centre, mouse_pos)
         self.entities["player"].set_rotation(vector_to_cursor[1])
-
+        move_by = move_by_vector((0, 0),
+                                 (min(vector_to_cursor[0], FORWARD_SPEED), vector_to_cursor[1]))
+        self.entities["player"].move_by_amount(move_by)
 
     @override
     def render(self, window) -> None:
