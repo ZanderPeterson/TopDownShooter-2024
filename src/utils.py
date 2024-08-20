@@ -20,5 +20,5 @@ def find_vector_between(from_pos: coords, to_pos: coords) -> Vector:
     return (magnitude, -direction)
 
 def move_by_vector(from_pos: coords, by_vector: Vector) -> coords:
-    return (from_pos[0] + by_vector[0]*math.cos(by_vector[1]),
-            from_pos[1] + by_vector[0]*math.sin(by_vector[1]))
+    return ((from_pos[0] + by_vector[0]*math.cos(by_vector[1])),
+            -(from_pos[1] + by_vector[0]*math.sin(by_vector[1])))
