@@ -1,4 +1,5 @@
-# This file is intended for running the game loop.
+#This file is intended for running the game loop
+
 import sys
 import os
 
@@ -21,19 +22,26 @@ def main() -> None:
     clock = pygame.time.Clock()
     running: bool = True
 
+    #Main Gameloop
     while running:
+        #Keeps the FPS capped to a value.
         clock.tick(FPS)
 
+        #Handles the events, such as keypresses.
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             else:
                 game.handle_event(event)
 
+        #Updates the current state.
         game.update()
+
+        #Renders everything and puts it onto the window.
         game.render()
         pygame.display.flip()
 
+    #Exits the window.
     pygame.quit()
 
 if __name__ == "__main__":

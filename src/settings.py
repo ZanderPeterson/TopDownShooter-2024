@@ -1,5 +1,5 @@
 # Provides some variables for other scripts to use.
-# Will eventually read values from a json file.
+# Will eventually read values from a json file... maybe.
 
 
 class Settings():

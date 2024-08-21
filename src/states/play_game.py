@@ -62,6 +62,7 @@ class PlayGameState(GameState):
 
     @override
     def render(self, window) -> None:
+        #Renders the background.
         window.fill((0, 0, 0))
 
         #Loops through all the entities and renders them to the screen.
@@ -71,7 +72,7 @@ class PlayGameState(GameState):
 
     @override
     def handle_event(self, event) -> None | str:
-        # Record down keypresses.
+        #Record down keypresses.
         if event.type == pygame.KEYDOWN and event.key in self.track_keys:
             self.track_keys[event.key] = True
         elif event.type == pygame.KEYUP and event.key in self.track_keys:
