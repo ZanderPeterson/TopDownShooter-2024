@@ -69,6 +69,7 @@ class PlayGameState(GameState):
             #print(entity.get_image_position())
             window.blit(entity.render_image(), entity.get_image_position())
 
+    @override
     def handle_event(self, event) -> None | str:
         # Record down keypresses.
         if event.type == pygame.KEYDOWN and event.key in self.track_keys:
