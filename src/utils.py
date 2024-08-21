@@ -8,6 +8,10 @@ coords: TypeAlias = Tuple[float, float]
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
 
 def find_vector_between(from_pos: coords, to_pos: coords) -> Vector:
+    """
+    Takes two coordinates, and finds the Vector that is required to travel from
+    the first Coordinate to the other Coordinate. That Vector is then returned.
+    """
     if from_pos == to_pos:
         return (0, 0)
     x_difference: float = to_pos[0] - from_pos[0]
@@ -20,5 +24,9 @@ def find_vector_between(from_pos: coords, to_pos: coords) -> Vector:
     return (magnitude, -direction)
 
 def move_by_vector(from_pos: coords, by_vector: Vector) -> coords:
+    """
+    Returns a new set of coordinates based on if something at a starting
+    position moves by a Vector.
+    """
     return ((from_pos[0] + by_vector[0]*math.cos(by_vector[1])),
             -(from_pos[1] + by_vector[0]*math.sin(by_vector[1])))
