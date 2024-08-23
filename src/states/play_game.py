@@ -23,7 +23,7 @@ class PlayGameState(GameState):
             pygame.K_d: False,
         }
 
-        self.entities["player"] = PlayerObject(start_pos=(300, 300))
+        self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16))
 
     @override
     def enter(self) -> None:
@@ -48,6 +48,7 @@ class PlayGameState(GameState):
 
         #Rotates the player to look at the mouse.
         self.entities["player"].set_rotation(vector_to_cursor[1])
+        #print(self.entities["player"].centre)
 
         #W & S Movement Code
         if not (self.track_keys[pygame.K_w] and self.track_keys[pygame.K_s]):
