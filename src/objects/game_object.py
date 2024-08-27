@@ -46,7 +46,6 @@ class GameObject():
                            self.img_size[1]/2 - rotated_img_size[1]/2)
         self.centre = (self.get_image_position()[0] + rotated_img_size[0]/2,
                        self.get_image_position()[1] + rotated_img_size[1]/2)
-        print(f"Position: {self.position} | rotated_img_size: {rotated_img_size} | Centre Pos: {self.centre}")
         return to_return
 
     def get_image_position(self):
