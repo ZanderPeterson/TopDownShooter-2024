@@ -57,6 +57,13 @@ class GameObject():
         """Sets the Object's position."""
         self.position = (float(position[0]), float(position[1]))
 
+    def set_position_by_centre(self, position: coords = (0, 0)) -> coords:
+        """Sets the Object's Position, but sets the centre of the sprite as opposed
+        to the top left corner of the sprite. Returns new position."""
+        self.position = (float(position[0] - self.img_size[0]/2),
+                         float(position[1] - self.img_size[1]/2))
+        return self.position
+
     def move_by_amount(self, position: coords) -> coords:
         """Moves the Object's position by an amount. Returns new position."""
         self.position = (self.position[0] + position[0],
