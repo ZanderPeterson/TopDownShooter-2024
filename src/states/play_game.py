@@ -56,9 +56,9 @@ class PlayGameState(GameState):
         if not (self.track_keys[pygame.K_a] and self.track_keys[pygame.K_d]):
             orbit_sideways_speed: float = 0
             if self.track_keys[pygame.K_a]:
-                orbit_sideways_speed = SIDEWAYS_SPEED
-            elif self.track_keys[pygame.K_d]:
                 orbit_sideways_speed = -SIDEWAYS_SPEED
+            elif self.track_keys[pygame.K_d]:
+                orbit_sideways_speed = SIDEWAYS_SPEED
             new_player_position: coords = orbit_around_circle(self.entities["player"].centre,
                                                               vector_to_cursor,
                                                               orbit_sideways_speed)
