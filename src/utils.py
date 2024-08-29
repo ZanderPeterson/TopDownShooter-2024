@@ -29,7 +29,7 @@ def move_by_vector(from_pos: coords, by_vector: Vector) -> coords:
     position moves by a Vector.
     """
     return ((from_pos[0] + by_vector[0]*math.cos(by_vector[1])),
-            -(from_pos[1] + by_vector[0]*math.sin(by_vector[1])))
+            (from_pos[1] + by_vector[0]*math.sin(-by_vector[1])))
 
 def orbit_around_circle(old_pos: coords, pos_to_centre: Vector, orbit_by: float) -> coords:
     """
@@ -42,5 +42,5 @@ def orbit_around_circle(old_pos: coords, pos_to_centre: Vector, orbit_by: float)
     orbit_by_radians: float = orbit_by_percentage / (math.pi*2)
     center_position: coords = move_by_vector(old_pos, pos_to_centre)
     new_position: coords = move_by_vector(center_position,
-                                          (pos_to_centre[0], pos_to_centre[1] + orbit_by_radians))
+                                          (pos_to_centre[0], pos_to_centre[1] + orbit_by_radians + math.pi))
     return new_position
