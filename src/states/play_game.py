@@ -6,7 +6,7 @@ import pygame
 from .game_state import GameState
 from src.objects.game_object import GameObject
 from src.objects.player_object import PlayerObject
-from src.utils import find_vector_between, move_by_vector
+from src.utils import find_vector_between, move_by_vector, orbit_around_circle
 
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
 
@@ -41,14 +41,28 @@ class PlayGameState(GameState):
         #Define some variables... maybe not the best way to do it.
         FORWARD_SPEED: float = 2
         BACKWARD_SPEED: float = 1.5
+        SIDEWAYS_SPEED: float = 1.5
 
         #Gets position of the mouse, and finds the Vector from the centre of the player to it.
         mouse_pos = pygame.mouse.get_pos()
+        #print(f"cursor: {mouse_pos}")
         vector_to_cursor: Vector = find_vector_between(self.entities["player"].centre, mouse_pos)
 
         #Rotates the player to look at the mouse.
         self.entities["player"].set_rotation(vector_to_cursor[1])
         #print(self.entities["player"].centre)
+
+        #A & D Movement Code
+        if not (self.track_keys[pygame.K_a] and self.track_keys[pygame.K_d]):
+            orbit_sideways_speed: float = 0
+            if self.track_keys[pygame.K_a]:
+                orbit_sideways_speed = SIDEWAYS_SPEED
+            elif self.track_keys[pygame.K_d]:
+                orbit_sideways_speed = -SIDEWAYS_SPEED
+            new_player_position: coords = orbit_around_circle(self.entities["player"].centre,
+                                                              vector_to_cursor,
+                                                              orbit_sideways_speed)
+            self.entities["player"].set_position_by_centre(new_player_position)
 
         #W & S Movement Code
         if not (self.track_keys[pygame.K_w] and self.track_keys[pygame.K_s]):
