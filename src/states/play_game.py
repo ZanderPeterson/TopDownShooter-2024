@@ -39,9 +39,9 @@ class PlayGameState(GameState):
     @override
     def update(self) -> None:
         #Define some variables... maybe not the best way to do it.
-        FORWARD_SPEED: float = 2
-        BACKWARD_SPEED: float = 1.5
-        SIDEWAYS_SPEED: float = 1.5
+        FORWARD_SPEED: float = 3
+        BACKWARD_SPEED: float = 3
+        SIDEWAYS_SPEED: float = 100
 
         #Gets position of the mouse, and finds the Vector from the centre of the player to it.
         mouse_pos = pygame.mouse.get_pos()
