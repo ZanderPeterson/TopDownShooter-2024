@@ -44,3 +44,8 @@ def orbit_around_circle(old_pos: coords, pos_to_centre: Vector, orbit_by: float)
     new_position: coords = move_by_vector(center_position,
                                           (pos_to_centre[0], pos_to_centre[1] + orbit_by_radians + math.pi))
     return new_position
+
+def reverse_vector(vector_to_reverse: Vector) -> Vector:
+    """Takes in a vector, and then adds pi radians to the direction, thus reversing the direction."""
+    return (vector_to_reverse[0],
+            vector_to_reverse[1] + math.pi)
