@@ -38,5 +38,8 @@ class PlayerObject(GameObject):
         Moves the player backward (towards the cursor).
         Returns the new player's position.
         """
+        if not move_by:
+            move_by = self.backward_speed
+
         self.move_forward(reverse_vector(vector_to_cursor), move_by)
         return self.position
