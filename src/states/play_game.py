@@ -38,11 +38,6 @@ class PlayGameState(GameState):
 
     @override
     def update(self) -> None:
-        #Define some variables... maybe not the best way to do it.
-        FORWARD_SPEED: float = 3
-        BACKWARD_SPEED: float = 3
-        SIDEWAYS_SPEED: float = 100
-
         #Gets position of the mouse, and finds the Vector from the centre of the player to it.
         mouse_pos = pygame.mouse.get_pos()
         #print(f"cursor: {mouse_pos}")
@@ -54,26 +49,17 @@ class PlayGameState(GameState):
 
         #A & D Movement Code
         if not (self.track_keys[pygame.K_a] and self.track_keys[pygame.K_d]):
-            orbit_sideways_speed: float = 0
             if self.track_keys[pygame.K_a]:
-                orbit_sideways_speed = -SIDEWAYS_SPEED
+                self.entities["player"].move_leftward(vector_to_cursor)
             elif self.track_keys[pygame.K_d]:
-                orbit_sideways_speed = SIDEWAYS_SPEED
-            new_player_position: coords = orbit_around_circle(self.entities["player"].centre,
-                                                              vector_to_cursor,
-                                                              orbit_sideways_speed)
-            self.entities["player"].set_position_by_centre(new_player_position)
+                self.entities["player"].move_rightward(vector_to_cursor)
 
         #W & S Movement Code
         if not (self.track_keys[pygame.K_w] and self.track_keys[pygame.K_s]):
-            forward_back_speed: float = 0
             if self.track_keys[pygame.K_w]:
-                forward_back_speed = FORWARD_SPEED
+                self.entities["player"].move_forward(vector_to_cursor)
             elif self.track_keys[pygame.K_s]:
-                forward_back_speed = -BACKWARD_SPEED
-            move_forward_by: Vector = move_by_vector((0, 0),
-                                                     (forward_back_speed, vector_to_cursor[1]))
-            self.entities["player"].move_by_amount(move_forward_by)
+                self.entities["player"].move_backward(vector_to_cursor)
 
     @override
     def render(self, window) -> None:
