@@ -56,3 +56,14 @@ class PlayerObject(GameObject):
         self.set_position_by_centre(new_position)
 
         return self.position
+
+    def move_leftward(self, vector_to_cursor: Vector, move_by: float | None = None) -> coords:
+        """
+        Moves the player leftward (towards the cursor).
+        Returns the new player's position.
+        """
+        if not move_by:
+            move_by = self.sideways_speed
+        move_by = -move_by #Flips move_by to go from positive to negative.
+
+        return self.move_rightward(vector_to_cursor, move_by)
