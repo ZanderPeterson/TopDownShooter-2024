@@ -3,7 +3,7 @@ from typing import Tuple, TypeAlias
 import pygame
 
 from .game_object import GameObject
-from src.utils import move_by_vector, reverse_vector
+from src.utils import move_by_vector, orbit_around_circle, reverse_vector
 
 coords: TypeAlias = Tuple[float, float]
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -42,4 +42,17 @@ class PlayerObject(GameObject):
             move_by = self.backward_speed
 
         self.move_forward(reverse_vector(vector_to_cursor), move_by)
+        return self.position
+
+    def move_rightward(self, vector_to_cursor: Vector, move_by: float | None = None) -> coords:
+        """
+        Moves the player rightward (towards the cursor).
+        Returns the new player's position.
+        """
+        if not move_by:
+            move_by = self.sideways_speed
+
+        new_position: coords = orbit_around_circle(self.centre, vector_to_cursor, move_by)
+        self.set_position_by_centre(new_position)
+
         return self.position
