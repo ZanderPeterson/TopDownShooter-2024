@@ -3,7 +3,7 @@ from typing import Tuple, TypeAlias
 import pygame
 
 from .game_object import GameObject
-from src.utils import move_by_vector
+from src.utils import move_by_vector, reverse_vector
 
 coords: TypeAlias = Tuple[float, float]
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -21,10 +21,22 @@ class PlayerObject(GameObject):
         self.backward_speed = 3
         self.sideways_speed = 100
 
-    def move_forward(self, vector_to_cursor: Vector, move_by: float | None = None) -> None:
-        """Moves the player forward (towards the cursor)."""
+    def move_forward(self, vector_to_cursor: Vector, move_by: float | None = None) -> coords:
+        """
+        Moves the player forward (towards the cursor).
+        Returns the new player's position.
+        """
         if not move_by:
             move_by = self.forward_speed
 
         change_pos_by: coords = move_by_vector((0, 0), (move_by, vector_to_cursor[1]))
         self.move_by_amount(change_pos_by)
+        return self.position
+
+    def move_backward(self, vector_to_cursor: Vector, move_by: float | None = None) -> coords:
+        """
+        Moves the player backward (towards the cursor).
+        Returns the new player's position.
+        """
+        self.move_forward(reverse_vector(vector_to_cursor), move_by)
+        return self.position
