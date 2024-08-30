@@ -40,12 +40,10 @@ class PlayGameState(GameState):
     def update(self) -> None:
         #Gets position of the mouse, and finds the Vector from the centre of the player to it.
         mouse_pos = pygame.mouse.get_pos()
-        #print(f"cursor: {mouse_pos}")
         vector_to_cursor: Vector = find_vector_between(self.entities["player"].centre, mouse_pos)
 
         #Rotates the player to look at the mouse.
         self.entities["player"].set_rotation(vector_to_cursor[1])
-        #print(self.entities["player"].centre)
 
         #A & D Movement Code
         if not (self.track_keys[pygame.K_a] and self.track_keys[pygame.K_d]):

@@ -38,7 +38,7 @@ def orbit_around_circle(old_pos: coords, pos_to_centre: Vector, orbit_by: float)
     position for the object.
     """
     orbital_circumference: float = pos_to_centre[0]*math.pi*2
-    orbit_by_percentage: float = orbit_by/orbital_circumference
+    orbit_by_percentage: float = orbit_by/orbital_circumference #I don't think this is needed. Makes it slow?
     orbit_by_radians: float = orbit_by_percentage / (math.pi*2)
     center_position: coords = move_by_vector(old_pos, pos_to_centre)
     new_position: coords = move_by_vector(center_position,
