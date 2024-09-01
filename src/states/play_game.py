@@ -45,6 +45,7 @@ class PlayGameState(GameState):
         #Rotates the player to look at the mouse.
         self.entities["player"].set_rotation(vector_to_cursor[1])
 
+        #Code that backs the player away from the cursor if the cursor is too close to the player's centre.
         if vector_to_cursor[0] < 10:
             self.entities["player"].move_backward(vector_to_cursor, move_by=10-vector_to_cursor[0])
 
