@@ -45,6 +45,9 @@ class PlayGameState(GameState):
         #Rotates the player to look at the mouse.
         self.entities["player"].set_rotation(vector_to_cursor[1])
 
+        if vector_to_cursor[0] < 10:
+            self.entities["player"].move_backward(vector_to_cursor, move_by=10-vector_to_cursor[0])
+
         #A & D Movement Code
         if not (self.track_keys[pygame.K_a] and self.track_keys[pygame.K_d]):
             if self.track_keys[pygame.K_a]:
