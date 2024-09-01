@@ -22,6 +22,11 @@ class PlayGameState(GameState):
             pygame.K_s: False,
             pygame.K_d: False,
         }
+        self.track_clicks: Dict[int, bool] = {
+            1: False, #Left Click
+            2: False, #Middle Click
+            3: False, #Right Click
+        }
 
         self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16))
 
@@ -31,6 +36,9 @@ class PlayGameState(GameState):
 
         for key in self.track_keys.keys():
             self.track_keys[key] = False
+
+        for click in self.track_clicks.keys():
+            self.track_clicks[click] = False
 
     @override
     def exit(self) -> None:
@@ -80,4 +88,10 @@ class PlayGameState(GameState):
             self.track_keys[event.key] = True
         elif event.type == pygame.KEYUP and event.key in self.track_keys:
             self.track_keys[event.key] = False
+
+        #Record down mouse clicks.
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button in self.track_clicks:
+            self.track_clicks[event.button] = True
+        elif event.type == pygame.MOUSEBUTTONUP and event.button in self.track_clicks:
+            self.track_clicks[event.button] = False
         return None
