@@ -6,6 +6,7 @@ import pygame
 from .game_state import GameState
 from src.objects.game_object import GameObject
 from src.objects.player_object import PlayerObject
+from src.objects.bullet_object import BulletObject
 from src.utils import find_vector_between, move_by_vector, orbit_around_circle
 
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -16,6 +17,8 @@ class PlayGameState(GameState):
     def __init__(self, game) -> None:
         super().__init__(game)
         self.entities: Dict[str, GameObject] = {}
+        self.bullets: Dict[str, BulletObject] = {}
+
         self.track_keys: Dict[int, bool] = {
             pygame.K_w: False,
             pygame.K_a: False,
@@ -78,8 +81,11 @@ class PlayGameState(GameState):
 
         #Loops through all the entities and renders them to the screen.
         for entity in self.entities.values():
-            #print(entity.get_image_position())
             window.blit(entity.render_image(), entity.get_image_position())
+
+        # Loops through all the bullets and renders them to the screen.
+        for bullet in self.bullets.values():
+            window.blit(bullet.render_image(), bullet.get_image_position())
 
     @override
     def handle_event(self, event) -> None | str:
