@@ -28,6 +28,8 @@ class GameObject():
 
         self.img_offset: coords = (0, 0)  # How far to offset the sprite's image to account for rotation.
         self.img_size: Tuple[float, float] = self.loaded_image.get_size()
+        self.centre: coords = (self.position[0] + self.img_size[0]/2,
+                               self.position[1] + self.img_size[1]/2)
 
     def render_image(self):
         """Returns a rendered image that can be blitted to the screen."""
@@ -39,8 +41,11 @@ class GameObject():
 
         #Rotates the image
         to_return = pygame.transform.rotate(to_return, degrees(self.rotation))
-        self.img_offset = (self.img_size[0]/2 - to_return.get_size()[0]/2,
-                           self.img_size[1]/2 - to_return.get_size()[1]/2)
+        rotated_img_size: coords = to_return.get_size()
+        self.img_offset = (self.img_size[0]/2 - rotated_img_size[0]/2,
+                           self.img_size[1]/2 - rotated_img_size[1]/2)
+        self.centre = (self.get_image_position()[0] + rotated_img_size[0]/2,
+                       self.get_image_position()[1] + rotated_img_size[1]/2)
         return to_return
 
     def get_image_position(self):
@@ -51,6 +56,13 @@ class GameObject():
     def set_position(self, position: coords = (0, 0)) -> None:
         """Sets the Object's position."""
         self.position = (float(position[0]), float(position[1]))
+
+    def set_position_by_centre(self, position: coords = (0, 0)) -> coords:
+        """Sets the Object's Position, but sets the centre of the sprite as opposed
+        to the top left corner of the sprite. Returns new position."""
+        self.position = (float(position[0] - self.img_size[0]/2),
+                         float(position[1] - self.img_size[1]/2))
+        return self.position
 
     def move_by_amount(self, position: coords) -> coords:
         """Moves the Object's position by an amount. Returns new position."""
