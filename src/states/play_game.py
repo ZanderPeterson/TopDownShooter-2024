@@ -17,7 +17,7 @@ class PlayGameState(GameState):
     def __init__(self, game) -> None:
         super().__init__(game)
         self.entities: Dict[str, GameObject] = {}
-        self.bullets: Dict[str, BulletObject] = {}
+        self.bullets: List[BulletObject] = []
 
         self.track_keys: Dict[int, bool] = {
             pygame.K_w: False,
@@ -84,7 +84,7 @@ class PlayGameState(GameState):
             window.blit(entity.render_image(), entity.get_image_position())
 
         # Loops through all the bullets and renders them to the screen.
-        for bullet in self.bullets.values():
+        for bullet in self.bullets:
             window.blit(bullet.render_image(), bullet.get_image_position())
 
     @override
