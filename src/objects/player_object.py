@@ -19,7 +19,7 @@ class PlayerObject(GameObject):
         super().__init__(tag="player", start_pos=start_pos, rotation=rotation, image=image)
         self.forward_speed = 3
         self.backward_speed = 3
-        self.sideways_speed = 100
+        self.sideways_speed = 3
 
     def move_forward(self, vector_to_cursor: Vector, move_by: float | None = None) -> coords:
         """
