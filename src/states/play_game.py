@@ -36,6 +36,9 @@ class PlayGameState(GameState):
             "sideways_speed": 3,
             "fire_rate": 60,
         }
+        self.game_state_variables: Dict[str, Any] = {
+            "time_before_next_shot": 0,
+        }
 
         self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
                                                forward_speed=self.constants["forward_speed"],
