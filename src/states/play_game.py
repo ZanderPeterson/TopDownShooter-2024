@@ -1,5 +1,5 @@
 from math import pi
-from typing import Dict, List, Tuple, override, TypeAlias
+from typing import Any, Dict, List, override, Tuple, TypeAlias
 
 import pygame
 
@@ -30,8 +30,17 @@ class PlayGameState(GameState):
             2: False, #Middle Click
             3: False, #Right Click
         }
+        self.constants: Dict[str, Any] = {
+            "forward_speed": 3,
+            "backward_speed": 3,
+            "sideways_speed": 3,
+            "fire_rate": 60,
+        }
 
-        self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16))
+        self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
+                                               forward_speed=self.constants["forward_speed"],
+                                               backward_speed=self.constants["backward_speed"],
+                                               sideways_speed=self.constants["sideways_speed"],)
 
     @override
     def enter(self) -> None:

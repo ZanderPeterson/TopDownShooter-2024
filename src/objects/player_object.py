@@ -15,11 +15,14 @@ class PlayerObject(GameObject):
     def __init__(self,
                  start_pos: coords = (0, 0),
                  rotation: float = 0,
+                 forward_speed: float = 0,
+                 backward_speed: float = 0,
+                 sideways_speed: float = 0,
                  image: str | None = None) -> None:
         super().__init__(tag="player", start_pos=start_pos, rotation=rotation, image=image)
-        self.forward_speed = 3
-        self.backward_speed = 3
-        self.sideways_speed = 3
+        self.forward_speed = forward_speed
+        self.backward_speed = backward_speed
+        self.sideways_speed = sideways_speed
 
     def move_forward(self, vector_to_cursor: Vector, move_by: float | None = None) -> coords:
         """
