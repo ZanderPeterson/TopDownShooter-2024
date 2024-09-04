@@ -86,11 +86,17 @@ class PlayGameState(GameState):
             elif self.track_keys[pygame.K_s]:
                 self.entities["player"].move_backward(vector_to_cursor)
 
+        #Countdown the time before next shot.
+        if self.game_variables["time_before_next_shot"] > 0:
+            self.game_variables["time_before_next_shot"] -= 1
+
         #Spawn Projectiles Code
         if self.track_clicks[1]:
-            new_bullet: BulletObject = BulletObject(rotation=self.entities["player"].rotation)
-            new_bullet.set_position_by_centre(self.entities["player"].centre)
-            self.bullets.append(new_bullet)
+            if self.game_variables["time_before_next_shot"] <= 0:
+                new_bullet: BulletObject = BulletObject(rotation=self.entities["player"].rotation)
+                new_bullet.set_position_by_centre(self.entities["player"].centre)
+                self.bullets.append(new_bullet)
+                self.game_variables["time_before_next_shot"] = self.constants["fire_rate"]
 
     @override
     def render(self, window) -> None:
