@@ -24,7 +24,7 @@ class BulletObject(GameObject):
 
     def get_vector(self) -> Vector:
         """Returns a vector which is just the (rotation, speed)"""
-        return (self.rotation, self.speed)
+        return (self.speed, self.rotation)
 
     def update(self) -> None:
         """Moved the bullet  by its speed and rotation."""
