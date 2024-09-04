@@ -3,6 +3,7 @@ from typing import Tuple, TypeAlias
 import pygame
 
 from .game_object import GameObject
+from src.utils import move_by_vector
 
 coords: TypeAlias = Tuple[float, float]
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -24,3 +25,8 @@ class BulletObject(GameObject):
     def get_vector(self) -> Vector:
         """Returns a vector which is just the (rotation, speed)"""
         return (self.rotation, self.speed)
+
+    def update(self) -> None:
+        """Moved the bullet  by its speed and rotation."""
+        self.position = move_by_vector(self.position,
+                                       self.get_vector())
