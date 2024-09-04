@@ -100,6 +100,10 @@ class PlayGameState(GameState):
                 self.bullets.append(new_bullet)
                 self.game_variables["time_before_next_shot"] = self.constants["fire_rate"]
 
+        #Updates all bullet positions.
+        for bullet in self.bullets:
+            bullet.update()
+
     @override
     def render(self, window) -> None:
         #Renders the background.
