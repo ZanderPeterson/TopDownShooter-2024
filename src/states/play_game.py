@@ -34,6 +34,7 @@ class PlayGameState(GameState):
             "forward_speed": 3,
             "backward_speed": 3,
             "sideways_speed": 3,
+            "bullet_speed": 5,
             "fire_rate": 60,
         }
         self.game_variables: Dict[str, Any] = {
@@ -93,7 +94,8 @@ class PlayGameState(GameState):
         #Spawn Projectiles Code
         if self.track_clicks[1]:
             if self.game_variables["time_before_next_shot"] <= 0:
-                new_bullet: BulletObject = BulletObject(rotation=self.entities["player"].rotation)
+                new_bullet: BulletObject = BulletObject(rotation=self.entities["player"].rotation,
+                                                        speed=self.constants["bullet_speed"])
                 new_bullet.set_position_by_centre(self.entities["player"].centre)
                 self.bullets.append(new_bullet)
                 self.game_variables["time_before_next_shot"] = self.constants["fire_rate"]
