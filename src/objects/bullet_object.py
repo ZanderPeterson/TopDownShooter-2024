@@ -20,3 +20,7 @@ class BulletObject(GameObject):
         if not speed:
             speed = 0
         self.speed: float = speed
+
+    def get_vector(self) -> Vector:
+        """Returns a vector which is just the (rotation, speed)"""
+        return (self.rotation, self.speed)
