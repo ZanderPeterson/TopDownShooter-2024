@@ -19,4 +19,4 @@ class BulletObject(GameObject):
         super().__init__(tag="bullet", start_pos=start_pos, rotation=rotation, image=image)
         if not speed:
             speed = 0
-        self.movement = (speed, self.rotation)
+        self.speed: float = speed
