@@ -14,9 +14,6 @@ class PlayGameState(GameState):
 
     def __init__(self, game) -> None:
         super().__init__(game)
-        self.entities: Dict[str, GameObject] = {}
-        self.bullets: List[BulletObject] = []
-
         self.track_keys: Dict[int, bool] = {
             pygame.K_w: False,
             pygame.K_a: False,
@@ -38,6 +35,10 @@ class PlayGameState(GameState):
         self.game_variables: Dict[str, Any] = {
             "time_before_next_shot": 0,
         }
+
+        self.entities: Dict[str, GameObject] = {}
+        self.bullets: List[BulletObject] = []
+        self.walls: List[WallObject] = []
 
         self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
                                                forward_speed=self.constants["forward_speed"],
@@ -114,6 +115,10 @@ class PlayGameState(GameState):
         # Loops through all the bullets and renders them to the screen.
         for bullet in self.bullets:
             window.blit(bullet.render_image(), bullet.get_image_position())
+
+        # Loops through all the bullets and renders them to the screen.
+        for wall in self.walls:
+            window.blit(wall.render_image(), wall.get_image_position())
 
     @override
     def handle_event(self, event) -> None | str:
