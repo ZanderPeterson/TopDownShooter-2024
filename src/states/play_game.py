@@ -4,9 +4,7 @@ from typing import Any, Dict, List, override, Tuple, TypeAlias
 import pygame
 
 from .game_state import GameState
-from src.objects.game_object import GameObject
-from src.objects.player_object import PlayerObject
-from src.objects.bullet_object import BulletObject
+from src.objects import GameObject, PlayerObject, BulletObject, WallObject
 from src.utils import find_vector_between, move_by_vector, orbit_around_circle
 
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
