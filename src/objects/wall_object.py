@@ -3,7 +3,7 @@ from typing import Tuple, TypeAlias
 import pygame
 
 from .game_object import GameObject
-from src.utils import find_object_corner, move_by_vector
+from src.utils import find_object_corner, move_by_vector, reverse_vector
 
 coords: TypeAlias = Tuple[float, float]
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -20,8 +20,13 @@ class WallObject(GameObject):
         super().__init__(tag="wall", start_pos=start_pos, rotation=rotation, image=image)
 
     @classmethod
-    def right_of_wall(cls, ref_wall: WallObject, image: str | None) -> WallObject:
-        """This method constructs a new WallObject with a position to the right of another wall."""
+    def relative_to_wall(cls, ref_wall: WallObject, new_pos_vector: Vector, image: str | None) -> WallObject:
+        """Constructs a new WallObject with a position relative to another wall."""
         object_corner = find_object_corner(ref_wall.position, ref_wall.centre, ref_wall.rotation)
-        new_wall_position = move_by_vector(object_corner, (ref_wall.img_size[0], ref_wall.rotation))
-        return cls(new_wall_position, self.rotation, image)
+        new_wall_position = move_by_vector(object_corner, new_pos_vector)
+        return cls(new_wall_position, ref_wall.rotation, image)
+
+    @classmethod
+    def right_of_wall(cls, ref_wall: WallObject, image: str | None) -> WallObject:
+        """Constructs a new WallObject with a position to the right of another wall."""
+        return relative_to_wall(ref_wall, (ref_wall.img_size[0], ref_wall_rotation), image)
