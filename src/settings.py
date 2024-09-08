@@ -5,5 +5,5 @@
 class Settings():
     WINDOW_CAPTION: str = "2d Shooter Game"
     WINDOW_WIDTH: int = 800
-    WINDOW_HEIGHT: int = 600
+    WINDOW_HEIGHT: int = 640
     FPS: int = 60
