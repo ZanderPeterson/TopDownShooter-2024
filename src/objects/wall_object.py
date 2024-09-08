@@ -20,28 +20,28 @@ class WallObject(GameObject):
         super().__init__(tag="wall", start_pos=start_pos, rotation=rotation, image=image)
 
     @classmethod
-    def relative_to_wall(cls, ref_wall: 'WallObject', new_pos_vector: Vector, image: str | None) -> 'WallObject':
+    def relative_to_wall(cls, ref_wall: 'WallObject', new_pos_vector: Vector, image: str | None = None) -> 'WallObject':
         """Constructs a new WallObject with a position relative to another wall."""
         object_corner = find_object_corner(ref_wall.position, ref_wall.centre, ref_wall.rotation)
         new_wall_position = move_by_vector(object_corner, new_pos_vector)
         return cls(new_wall_position, ref_wall.rotation, image)
 
     @classmethod
-    def right_of_wall(cls, ref_wall: 'WallObject', image: str | None) -> 'WallObject':
+    def right_of_wall(cls, ref_wall: 'WallObject', image: str | None = None) -> 'WallObject':
         """Constructs a new WallObject with a position to the right of another wall."""
         return cls.relative_to_wall(ref_wall, (ref_wall.img_size[0], ref_wall.rotation), image)
 
     @classmethod
-    def left_of_wall(cls, ref_wall: 'WallObject', image: str | None) -> 'WallObject':
+    def left_of_wall(cls, ref_wall: 'WallObject', image: str | None = None) -> 'WallObject':
         """Constructs a new WallObject with a position to the left of another wall."""
         return cls.relative_to_wall(ref_wall, reverse_vector(ref_wall.img_size[0], ref_wall.rotation), image)
 
     @classmethod
-    def above_wall(cls, ref_wall: 'WallObject', image: str | None) -> 'WallObject':
+    def above_wall(cls, ref_wall: 'WallObject', image: str | None = None) -> 'WallObject':
         """Constructs a new WallObject with a position above another wall."""
         return cls.relative_to_wall(ref_wall, (ref_wall.img_size[1], ref_wall.rotation), image)
 
     @classmethod
-    def below_wall(cls, ref_wall: 'WallObject', image: str | None) -> 'WallObject':
+    def below_wall(cls, ref_wall: 'WallObject', image: str | None = None) -> 'WallObject':
         """Constructs a new WallObject with a position below another wall."""
         return cls.relative_to_wall(ref_wall, reverse_vector(ref_wall.img_size[1], ref_wall.rotation), image)
