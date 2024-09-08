@@ -1,3 +1,4 @@
+from math import pi
 from typing import Tuple, TypeAlias
 
 import pygame
@@ -34,14 +35,14 @@ class WallObject(GameObject):
     @classmethod
     def left_of_wall(cls, ref_wall: 'WallObject', image: str | None = None) -> 'WallObject':
         """Constructs a new WallObject with a position to the left of another wall."""
-        return cls.relative_to_wall(ref_wall, reverse_vector(ref_wall.img_size[0], ref_wall.rotation), image)
+        return cls.relative_to_wall(ref_wall, reverse_vector((ref_wall.img_size[0], ref_wall.rotation)), image)
 
     @classmethod
     def above_wall(cls, ref_wall: 'WallObject', image: str | None = None) -> 'WallObject':
         """Constructs a new WallObject with a position above another wall."""
-        return cls.relative_to_wall(ref_wall, (ref_wall.img_size[1], ref_wall.rotation), image)
+        return cls.relative_to_wall(ref_wall, (ref_wall.img_size[1], ref_wall.rotation + pi/2), image)
 
     @classmethod
     def below_wall(cls, ref_wall: 'WallObject', image: str | None = None) -> 'WallObject':
         """Constructs a new WallObject with a position below another wall."""
-        return cls.relative_to_wall(ref_wall, reverse_vector(ref_wall.img_size[1], ref_wall.rotation), image)
+        return cls.relative_to_wall(ref_wall, reverse_vector((ref_wall.img_size[1], ref_wall.rotation + pi/2)), image)
