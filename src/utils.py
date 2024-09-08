@@ -44,6 +44,14 @@ def orbit_around_circle(old_pos: coords, pos_to_centre: Vector, orbit_by: float)
 
     return new_position
 
+def find_object_corner(corner_position: coords, pos_to_centre: Vector, rotation: float) -> coords:
+    """
+    Finds the new corner position based upon the old corner's position,
+    the centre of the sprite, and the amount the object is being rotated.
+    """
+    orbit_by = rotation * pos_to_centre[1]
+    return orbit_around_circle(corner_position, pos_to_centre, orbit_by)
+
 def reverse_vector(vector_to_reverse: Vector) -> Vector:
     """Takes in a vector, and then adds pi radians to the direction, thus reversing the direction."""
     return (vector_to_reverse[0],
