@@ -45,6 +45,17 @@ class PlayGameState(GameState):
                                                backward_speed=self.constants["backward_speed"],
                                                sideways_speed=self.constants["sideways_speed"],)
 
+        self.walls.append(WallObject((0, 0)))
+        for i in range(1, 25):
+            self.walls.append(WallObject.right_of_wall(self.walls[-1]))
+        for i in range(1, 20):
+            self.walls.append(WallObject.below_wall(self.walls[-1]))
+        for i in range(1, 25):
+            self.walls.append(WallObject.left_of_wall(self.walls[-1]))
+        for i in range(1, 20):
+            self.walls.append(WallObject.above_wall(self.walls[-1]))
+        print(len(self.walls))
+
     @override
     def enter(self) -> None:
         print("Entering the Play Game state.")
