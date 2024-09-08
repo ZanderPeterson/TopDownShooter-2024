@@ -30,3 +30,18 @@ class WallObject(GameObject):
     def right_of_wall(cls, ref_wall: WallObject, image: str | None) -> WallObject:
         """Constructs a new WallObject with a position to the right of another wall."""
         return relative_to_wall(ref_wall, (ref_wall.img_size[0], ref_wall_rotation), image)
+
+    @classmethod
+    def left_of_wall(cls, ref_wall: WallObject, image: str | None) -> WallObject:
+        """Constructs a new WallObject with a position to the left of another wall."""
+        return relative_to_wall(ref_wall, reverse_vector(ref_wall.img_size[0], ref_wall_rotation), image)
+
+    @classmethod
+    def above_wall(cls, ref_wall: WallObject, image: str | None) -> WallObject:
+        """Constructs a new WallObject with a position above another wall."""
+        return relative_to_wall(ref_wall, (ref_wall.img_size[1], ref_wall_rotation), image)
+
+    @classmethod
+    def below_wall(cls, ref_wall: WallObject, image: str | None) -> WallObject:
+        """Constructs a new WallObject with a position below another wall."""
+        return relative_to_wall(ref_wall, reverse_vector(ref_wall.img_size[1], ref_wall_rotation), image)
