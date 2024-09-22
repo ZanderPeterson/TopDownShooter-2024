@@ -56,3 +56,10 @@ def reverse_vector(vector_to_reverse: Vector) -> Vector:
     """Takes in a vector, and then adds pi radians to the direction, thus reversing the direction."""
     return (vector_to_reverse[0],
             vector_to_reverse[1] + math.pi)
+
+def find_radius_of_square(side_length: float, rotation: float) -> float:
+    """
+    Finds the distance from the middle to the right side, and accounts for rotation.
+    Returned Result varies from side_length/2 to side_length*sqrt(2)/2
+    """
+    return side_length*sqrt(2)/2 * math.cos(rotation%(pi/2) - pi/4)
