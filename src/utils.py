@@ -2,7 +2,7 @@
 
 import math
 
-from typing import Tuple, TypeAlias
+from typing import Callable, Tuple, TypeAlias
 
 coords: TypeAlias = Tuple[float, float]
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -63,3 +63,27 @@ def find_radius_of_square(side_length: float, rotation: float) -> float:
     Returned Result varies from side_length/2 to side_length*sqrt(2)/2
     """
     return side_length*sqrt(2)/2 * math.cos(rotation%(pi/2) - pi/4)
+
+def check_collision(still_obj_pos: coords, still_obj_radius_func: Callable[[float], float],
+                    moving_obj_pos: coords, moving_obj_radius_func: Callable[[float], float]) -> Vector:
+    """
+    This function takes in the still_obj's centre position and a function that takes in an angle in radians
+    and a moving_obj's position and radius calculating function.
+
+    Some examples of acceptable inputs for still_obj_radius_func would be:
+    lambda theta: find_radius_of_square(32, theta-(1.04))
+    lambda theta: 32
+
+    If the moving obj follows the returned Vector, then the objects will no longer be colliding.
+    The returned Vector is (0, 0) if there is no collision in the first place.
+    """
+    vector_between_centres: Vector = find_vector_between(moving_obj_pos, still_obj_pos)
+    moving_obj_radius: float = moving_obj_radius_func(vector_between_centres[1])
+    still_obj_radius: float = still_obj_radius_func(reverse_vector(vector_between_centres)[1])
+
+    space_between_objects: float = vector_between_centres[0] - (moving_obj_radius + still_obj_radius)
+
+    if space_between_objects > 0:
+        #Objects are NOT colliding.
+        return (0, 0)
+    return reverse_vector(space_between_objects, vector_between_centres[0])
