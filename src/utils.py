@@ -62,7 +62,7 @@ def find_radius_of_square(side_length: float, rotation: float) -> float:
     Finds the distance from the middle to the right side, and accounts for rotation.
     Returned Result varies from side_length/2 to side_length*sqrt(2)/2
     """
-    return side_length*sqrt(2)/2 * math.cos(rotation%(pi/2) - pi/4)
+    return side_length*math.sqrt(2)/2 * math.cos(rotation%(math.pi/2) - math.pi/4)
 
 def check_collision(still_obj_pos: coords, still_obj_radius_func: Callable[[float], float],
                     moving_obj_pos: coords, moving_obj_radius_func: Callable[[float], float]) -> Vector:
@@ -72,7 +72,7 @@ def check_collision(still_obj_pos: coords, still_obj_radius_func: Callable[[floa
 
     Some examples of acceptable inputs for still_obj_radius_func would be:
     lambda theta: find_radius_of_square(32, theta-(1.04))
-    lambda theta: 32
+    lambda theta: 16
 
     If the moving obj follows the returned Vector, then the objects will no longer be colliding.
     The returned Vector is (0, 0) if there is no collision in the first place.
@@ -82,8 +82,7 @@ def check_collision(still_obj_pos: coords, still_obj_radius_func: Callable[[floa
     still_obj_radius: float = still_obj_radius_func(reverse_vector(vector_between_centres)[1])
 
     space_between_objects: float = vector_between_centres[0] - (moving_obj_radius + still_obj_radius)
-
     if space_between_objects > 0:
         #Objects are NOT colliding.
         return (0, 0)
-    return reverse_vector(space_between_objects, vector_between_centres[0])
+    return (-space_between_objects, vector_between_centres[1])
