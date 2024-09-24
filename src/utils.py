@@ -85,4 +85,4 @@ def check_collision(still_obj_pos: coords, still_obj_radius_func: Callable[[floa
     if space_between_objects > 0:
         #Objects are NOT colliding.
         return (0, 0)
-    return (-space_between_objects, vector_between_centres[1])
+    return reverse_vector((-space_between_objects, vector_between_centres[1]))

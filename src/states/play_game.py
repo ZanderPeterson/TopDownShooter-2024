@@ -5,7 +5,7 @@ import pygame
 
 from .game_state import GameState
 from src.objects import GameObject, PlayerObject, BulletObject, WallObject
-from src.utils import find_vector_between, move_by_vector, orbit_around_circle
+from src.utils import check_collision, find_radius_of_square, find_vector_between, move_by_vector, orbit_around_circle
 
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
 
@@ -96,6 +96,15 @@ class PlayGameState(GameState):
                 self.entities["player"].move_forward(vector_to_cursor)
             elif self.track_keys[pygame.K_s]:
                 self.entities["player"].move_backward(vector_to_cursor)
+
+        #Checks for collision between the player and the walls.
+        for wall in self.walls:
+            move_by: Vector = (0, 0)
+            move_by = check_collision(wall.centre,
+                                      lambda theta: find_radius_of_square(wall.img_size[0], theta-(wall.rotation)),
+                                      self.entities["player"].centre,
+                                      lambda theta: self.entities["player"].img_size[0]/2)
+            self.entities["player"].move_by_amount(move_by_vector((0, 0), move_by))
 
         #Countdown the time before next shot.
         if self.game_variables["time_before_next_shot"] > 0:
