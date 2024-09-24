@@ -54,7 +54,6 @@ class PlayGameState(GameState):
             self.walls.append(WallObject.left_of_wall(self.walls[-1]))
         for i in range(1, 20):
             self.walls.append(WallObject.above_wall(self.walls[-1]))
-        print(len(self.walls))
 
     @override
     def enter(self) -> None:
