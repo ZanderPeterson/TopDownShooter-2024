@@ -114,13 +114,13 @@ def find_line_intersection(line_a: Tuple[coords, coords],
 
     #Calculations that determine where on the lines the intersection occurs.
     line_a_intersection: float = ((point_c[0] - point_a[0])*(point_d[1] - point_c[1])
-                                 -(point_c[1] - point_a[1])*(point_d[0] - point_c[0])) / determinate
-    line_b_intersection: float = ((point_c[0] - point_a[0]) * (point_b[1] - point_a[1])
-                                 -(point_c[1] - point_a[1]) * (point_b[0] - point_a[0])) / determinate
+                                 -(point_c[1] - point_a[1])*(point_d[0] - point_c[0]))/determinate
+    line_b_intersection: float = ((point_c[0] - point_a[0])*(point_b[1] - point_a[1])
+                                 -(point_c[1] - point_a[1])*(point_b[0] - point_a[0]))/determinate
 
     #Calculates the intersection point
-    intersection_point: coords = (point_a[0] + line_a_intersection * (point_b[0] - point_a[0]),
-                                  point_a[1] + line_a_intersection * (point_b[1] - point_a[1]))
+    intersection_point: coords = (point_a[0] + line_a_intersection*(point_b[0] - point_a[0]),
+                                  point_a[1] + line_a_intersection*(point_b[1] - point_a[1]))
 
     #Returns all the information required, as explained in the documentation.
     return (intersection_point,
