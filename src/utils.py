@@ -86,3 +86,45 @@ def check_collision(still_obj_pos: coords, still_obj_radius_func: Callable[[floa
         #Objects are NOT colliding.
         return (0, 0)
     return reverse_vector((-space_between_objects, vector_between_centres[1]))
+
+def find_line_intersection(line_a: Tuple[coords, coords],
+                           line_b: Tuple[coords, coords]) -> Tuple[coords, bool, float, float] | None:
+    """
+    Takes in two lines (A line is described as 2 positions) and outputs some values.
+
+    If the lines are parallel or collinear, then the output is None.
+    These values are the intersection point (which will always give a value, even if
+    the lines do not intersect), A bool which describes if there is a collision, and 2 floats.
+
+    The first float is where along the first line the intersection occurs (ranges from
+    0-1 if colliding, may be another value if no collision) and the second float is
+    the same deal but along the second line.
+    """
+    #This may slightly hurt execution speed, but significantly aids in readability.
+    point_a: coords = line_a[0]
+    point_b: coords = line_a[1]
+    point_c: coords = line_b[0]
+    point_d: coords = line_b[1]
+
+    #Determinate calculations
+    determinate: float = ((point_b[0] - point_a[0])*(point_d[1] - point_c[1])
+                         -(point_b[1] - point_a[1])*(point_d[0] - point_c[0]))
+    if determinate == 0:
+        return None #Lines are parallel or collinear.
+
+    #Calculations that determine where on the lines the intersection occurs.
+    line_a_intersection: float = ((point_c[0] - point_a[0])*(point_d[1] - point_c[1])
+                                 -(point_c[1] - point_a[1])*(point_d[0] - point_c[0])) / determinate
+    line_b_intersection: float = ((point_c[0] - point_a[0]) * (point_b[1] - point_a[1])
+                                 -(point_c[1] - point_a[1]) * (point_b[0] - point_a[0])) / determinate
+
+    #Calculates the intersection point
+    intersection_point: coords = (point_a[0] + line_a_intersection * (point_b[0] - point_a[0]),
+                                  point_a[1] + line_a_intersection * (point_b[1] - point_a[1]))
+
+    #Returns all the information required, as explained in the documentation.
+    return (intersection_point,
+            0 <= line_a_intersection <= 1 and 0 <= line_b_intersection <= 1,
+            line_a_intersection,
+            line_b_intersection)
+
