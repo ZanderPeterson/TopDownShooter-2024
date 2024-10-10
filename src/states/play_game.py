@@ -120,7 +120,7 @@ class PlayGameState(GameState):
 
         #Updates all bullet positions.
         for bullet in self.bullets:
-            bullet.update()
+            bullet.update(self.walls)
 
     @override
     def render(self, window) -> None:
