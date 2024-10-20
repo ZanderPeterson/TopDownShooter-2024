@@ -152,17 +152,17 @@ def check_reflection(wall_obj_pos: coords, wall_obj_rotation: float, wall_obj_si
 
     #Iterate over all the sides and record any collisions between the bullet and that side.
     for side in range(0, 4):
-        wall_corner_position.append(old_corner)
-        side_vector: Vector = (obj_size[side%2], side*(math.pi/2) + wall_obj_rotation)
+        wall_corner_positions.append(old_corner)
+        side_vector: Vector = (wall_obj_size[side%2], side*(math.pi/2) + wall_obj_rotation)
         new_corner: coords = move_by_vector(old_corner, side_vector)
         line: Tuple[coords, coords] = (old_corner, new_corner)
-        old_corner = new_corner
         collision_results.append(find_line_intersection(line, bullet_line))
+        old_corner = new_corner
 
     #This fuss over the 'closest_collision' helps make the code more robust and less error-prone.
     #This is because the bullet may intersect over multiple sides. In that edge case, the bullet should
     #In that situation, the bullet should reflect off the first side it would have encountered.
-    closest_collision: int | None = 0
+    closest_collision: int | None = None
     for i, collision in enumerate(collision_results):
         if not collision:  #If this collision is parallel or collinear
             continue
@@ -174,32 +174,32 @@ def check_reflection(wall_obj_pos: coords, wall_obj_rotation: float, wall_obj_si
         elif collision_results[closest_collision][3] > collision[3]:  #See if this collision is closer.
             closest_collision = i
 
-    if not closest_collision: #If there were no collisions at all
+    if closest_collision is None: #If there were no collisions at all
         return None
 
     #This code will only be executed if there was a collision.
     collision: Tuple[coords, bool, float, float] = collision_results[closest_collision]
     point_a: coords = wall_corner_positions[closest_collision - 1]
     point_b: coords = wall_corner_positions[closest_collision]
-    side_length: float = obj_size[closest_collision%2]
+    side_length: float = wall_obj_size[closest_collision%2]
 
     #Determine the closest point, which is needed for reflection calculations.
     point_a_distance_from_bullet: float = find_vector_between(bullet_pos, point_a)[0]
     point_b_distance_from_bullet: float = find_vector_between(bullet_pos, point_b)[0]
     if point_a_distance_from_bullet < point_b_distance_from_bullet:
         closest_corner: coords = point_a
-        closest_side: float = side_length*collision[2]
-        add_or_sub: int = 1
-    else:
-        closest_corner: coords = point_b
         closest_side: float = side_length*(1 - collision[2])
         add_or_sub: int = -1
+    else:
+        closest_corner: coords = point_b
+        closest_side: float = side_length*collision[2]
+        add_or_sub: int = 1
 
     #Reflection Calculations
     bullet_travel_before_collision: float = bullet_travel_by[0]*collision[3]
     bullet_travel_after_collision: float = bullet_travel_by[0] - bullet_travel_before_collision
     opposite: float = find_vector_between(closest_corner, bullet_pos)[0]
-    angle_of_incidence = math.pi/2 - math.acos(bullet_travel_before_collision**2 + closest_side**2 - opposite**2
-                                               /(2*bullet_travel_before_collision*closest_side))
-    reflected_ray = bullet_travel_by[1] + angle_of_incidence*2*add_or_sub
+    angle_of_incidence: float = math.pi/2 - math.acos((bullet_travel_before_collision**2 + closest_side**2 - opposite**2)/(2*bullet_travel_before_collision*closest_side))
+    reflected_ray: float = (bullet_travel_by[1] + angle_of_incidence*2*add_or_sub + math.pi)%(2*math.pi)
+    print(f"angle_i={angle_of_incidence}, ray={reflected_ray}")
     return (collision[0], (bullet_travel_after_collision, reflected_ray))

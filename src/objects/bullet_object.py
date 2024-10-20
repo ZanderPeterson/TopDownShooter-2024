@@ -28,7 +28,7 @@ class BulletObject(GameObject):
 
     def update(self, walls) -> None:
         """Moved the bullet  by its speed and rotation."""
-        current_pos: coords = self.position
+        current_pos: coords = self.get_centre_position()
         travel_by: Vector = self.get_vector()
         first_iteration: bool = True
         closest_wall: Tuple[int, Tuple[coords, Vector]] | None = None
@@ -53,10 +53,10 @@ class BulletObject(GameObject):
                     closest_wall = (i, collision_data)
 
             if not closest_wall:
-                self.position = move_by_vector(current_pos, travel_by)
+                self.set_position_by_centre(move_by_vector(current_pos, travel_by))
                 self.rotation = travel_by[1]
                 break
 
-            self.position = closest_wall[1][0]
-            current_pos = self.position
             travel_by = closest_wall[1][1]
+            self.set_position_by_centre(move_by_vector(closest_wall[1][0], by_vector=(0.1, travel_by[1])))
+            current_pos = self.get_centre_position()
