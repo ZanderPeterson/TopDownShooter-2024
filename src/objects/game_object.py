@@ -53,6 +53,11 @@ class GameObject():
         return (self.position[0] + self.img_offset[0],
                 self.position[1] + self.img_offset[1])
 
+    def get_centre_position(self):
+        """Returns the position of the centre of the sprite."""
+        return (self.position[0] + self.img_size[0]/2,
+                self.position[1] + self.img_size[1]/2)
+
     def set_position(self, position: coords = (0, 0)) -> None:
         """Sets the Object's position."""
         self.position = (float(position[0]), float(position[1]))
