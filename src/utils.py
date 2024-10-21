@@ -201,5 +201,4 @@ def check_reflection(wall_obj_pos: coords, wall_obj_rotation: float, wall_obj_si
     opposite: float = find_vector_between(closest_corner, bullet_pos)[0]
     angle_of_incidence: float = math.pi/2 - math.acos((bullet_travel_before_collision**2 + closest_side**2 - opposite**2)/(2*bullet_travel_before_collision*closest_side))
     reflected_ray: float = (bullet_travel_by[1] + angle_of_incidence*2*add_or_sub + math.pi)%(2*math.pi)
-    print(f"angle_i={angle_of_incidence}, ray={reflected_ray}")
     return (collision[0], (bullet_travel_after_collision, reflected_ray))
