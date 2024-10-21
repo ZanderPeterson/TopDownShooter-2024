@@ -4,10 +4,8 @@ from typing import Any, Dict, List, override, Tuple, TypeAlias
 import pygame
 
 from .game_state import GameState
-from src.objects.game_object import GameObject
-from src.objects.player_object import PlayerObject
-from src.objects.bullet_object import BulletObject
-from src.utils import find_vector_between, move_by_vector, orbit_around_circle
+from src.objects import GameObject, PlayerObject, BulletObject, WallObject
+from src.utils import check_collision, find_radius_of_square, find_vector_between, move_by_vector, orbit_around_circle
 
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
 
@@ -16,9 +14,6 @@ class PlayGameState(GameState):
 
     def __init__(self, game) -> None:
         super().__init__(game)
-        self.entities: Dict[str, GameObject] = {}
-        self.bullets: List[BulletObject] = []
-
         self.track_keys: Dict[int, bool] = {
             pygame.K_w: False,
             pygame.K_a: False,
@@ -41,10 +36,24 @@ class PlayGameState(GameState):
             "time_before_next_shot": 0,
         }
 
+        self.entities: Dict[str, GameObject] = {}
+        self.bullets: List[BulletObject] = []
+        self.walls: List[WallObject] = []
+
         self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
                                                forward_speed=self.constants["forward_speed"],
                                                backward_speed=self.constants["backward_speed"],
                                                sideways_speed=self.constants["sideways_speed"],)
+
+        self.walls.append(WallObject((0, 0)))
+        for i in range(1, 25):
+            self.walls.append(WallObject.right_of_wall(self.walls[-1]))
+        for i in range(1, 20):
+            self.walls.append(WallObject.below_wall(self.walls[-1]))
+        for i in range(1, 25):
+            self.walls.append(WallObject.left_of_wall(self.walls[-1]))
+        for i in range(1, 20):
+            self.walls.append(WallObject.above_wall(self.walls[-1]))
 
     @override
     def enter(self) -> None:
@@ -87,6 +96,15 @@ class PlayGameState(GameState):
             elif self.track_keys[pygame.K_s]:
                 self.entities["player"].move_backward(vector_to_cursor)
 
+        #Checks for collision between the player and the walls.
+        for wall in self.walls:
+            move_by: Vector = (0, 0)
+            move_by = check_collision(wall.centre,
+                                      lambda theta: find_radius_of_square(wall.img_size[0], theta-(wall.rotation)),
+                                      self.entities["player"].centre,
+                                      lambda theta: self.entities["player"].img_size[0]/2)
+            self.entities["player"].move_by_amount(move_by_vector((0, 0), move_by))
+
         #Countdown the time before next shot.
         if self.game_variables["time_before_next_shot"] > 0:
             self.game_variables["time_before_next_shot"] -= 1
@@ -102,7 +120,7 @@ class PlayGameState(GameState):
 
         #Updates all bullet positions.
         for bullet in self.bullets:
-            bullet.update()
+            bullet.update(self.walls)
 
     @override
     def render(self, window) -> None:
@@ -116,6 +134,10 @@ class PlayGameState(GameState):
         # Loops through all the bullets and renders them to the screen.
         for bullet in self.bullets:
             window.blit(bullet.render_image(), bullet.get_image_position())
+
+        # Loops through all the bullets and renders them to the screen.
+        for wall in self.walls:
+            window.blit(wall.render_image(), wall.get_image_position())
 
     @override
     def handle_event(self, event) -> None | str:
