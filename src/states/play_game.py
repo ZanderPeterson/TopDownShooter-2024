@@ -43,7 +43,8 @@ class PlayGameState(GameState):
         self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
                                                forward_speed=self.constants["forward_speed"],
                                                backward_speed=self.constants["backward_speed"],
-                                               sideways_speed=self.constants["sideways_speed"],)
+                                               sideways_speed=self.constants["sideways_speed"],
+                                               image="player.png")
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
