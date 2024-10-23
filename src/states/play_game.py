@@ -114,7 +114,8 @@ class PlayGameState(GameState):
         if self.track_clicks[1]:
             if self.game_variables["time_before_next_shot"] <= 0:
                 new_bullet: BulletObject = BulletObject(rotation=self.entities["player"].rotation,
-                                                        speed=self.constants["bullet_speed"])
+                                                        speed=self.constants["bullet_speed"],
+                                                        image="bullet.png")
                 new_bullet.set_position_by_centre(self.entities["player"].centre)
                 self.bullets.append(new_bullet)
                 self.game_variables["time_before_next_shot"] = self.constants["fire_rate"]
