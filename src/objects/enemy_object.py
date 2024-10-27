@@ -27,7 +27,7 @@ class EnemyObject(GameObject):
 
     def update(self):
         """Updates the enemy."""
-        self.max_cooldown = max(self.cooldown - 1, 0)
+        self.cooldown = max(self.cooldown - 1, 0)
 
     def aim_in_direction(self, target_centre) -> float:
         """Takes in a target's position, and figures out where to look"""
@@ -43,7 +43,7 @@ class EnemyObject(GameObject):
         self.cooldown = self.max_cooldown
 
         #Figures out how off the shot is
-        shoot_direction: float = random_normal(-accuracy, accuracy, 0, accuracy/3, 3)
+        shoot_direction: float = random_normal(-self.accuracy, self.accuracy, 0, self.accuracy/3, 3)
 
         #Determines shot direction
         return shoot_direction + self.rotation
