@@ -38,7 +38,7 @@ class EnemyObject(GameObject):
         """Checks if the cooldown is at 0"""
         return self.cooldown <= 0
 
-    def shoot_at_location(self, target_centre) -> float:
+    def find_direction_to_shoot(self) -> float:
         """Takes in a target's position, and figures out where to shoot"""
         self.cooldown = self.max_cooldown
 
