@@ -4,7 +4,7 @@ from typing import Any, Dict, List, override, Tuple, TypeAlias
 import pygame
 
 from .game_state import GameState
-from src.objects import GameObject, PlayerObject, BulletObject, WallObject
+from src.objects import GameObject, PlayerObject, BulletObject, WallObject, EnemyObject
 from src.utils import check_collision, find_radius_of_square, find_vector_between, move_by_vector, orbit_around_circle
 
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -37,6 +37,7 @@ class PlayGameState(GameState):
         }
 
         self.entities: Dict[str, GameObject] = {}
+        self.enemies: List[EnemyObject] = []
         self.bullets: List[BulletObject] = []
         self.walls: List[WallObject] = []
 
@@ -44,6 +45,10 @@ class PlayGameState(GameState):
                                                forward_speed=self.constants["forward_speed"],
                                                backward_speed=self.constants["backward_speed"],
                                                sideways_speed=self.constants["sideways_speed"],)
+        self.enemies.append(EnemyObject(start_pos=(400, 400),
+                                        start_hp=5,
+                                        cooldown=120,
+                                        accuracy=5))
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
@@ -130,6 +135,10 @@ class PlayGameState(GameState):
         #Loops through all the entities and renders them to the screen.
         for entity in self.entities.values():
             window.blit(entity.render_image(), entity.get_image_position())
+
+        #Loops through all the enemies and renders them to the screen.
+        for enemy in self.enemies:
+            window.blit(enemy.render_image(), enemy.get_image_position())
 
         # Loops through all the bullets and renders them to the screen.
         for bullet in self.bullets:
