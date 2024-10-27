@@ -136,7 +136,18 @@ class PlayGameState(GameState):
 
         #Updates all bullet positions.
         for bullet in self.bullets:
-            bullet.update(self.walls, self.enemies + list(self.entities.values()))
+            hit_targets: List[GameObject | PlayerObject | EnemyObject] = bullet.update(self.walls,
+                                                                                       self.enemies + list(self.entities.values()))
+            for target in hit_targets:
+                if target.tag == "player":
+                    #Player got hit
+                    pass
+                elif target.tag == "enemy":
+                    #An enemy got hit
+                    target.health -= 1
+                    if target.health <= 0:
+                        #Enemy is dead
+                        self.enemies.pop(self.enemies.index(target))
 
     @override
     def render(self, window) -> None:
