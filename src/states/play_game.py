@@ -48,7 +48,7 @@ class PlayGameState(GameState):
         self.enemies.append(EnemyObject(start_pos=(400, 400),
                                         start_hp=5,
                                         cooldown=120,
-                                        accuracy=5))
+                                        accuracy=0.5))
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
@@ -114,7 +114,7 @@ class PlayGameState(GameState):
         if self.game_variables["time_before_next_shot"] > 0:
             self.game_variables["time_before_next_shot"] -= 1
 
-        #Spawn Projectiles Code
+        #Spawn Player's Projectiles Code
         if self.track_clicks[1]:
             if self.game_variables["time_before_next_shot"] <= 0:
                 new_bullet: BulletObject = BulletObject(rotation=self.entities["player"].rotation,
@@ -122,6 +122,17 @@ class PlayGameState(GameState):
                 new_bullet.set_position_by_centre(self.entities["player"].centre)
                 self.bullets.append(new_bullet)
                 self.game_variables["time_before_next_shot"] = self.constants["fire_rate"]
+
+        #Update Enemies Code (and spawn the Enemies' Projectiles)
+        for enemy in self.enemies:
+            enemy.update()
+            enemy.aim_in_direction(self.entities["player"].get_centre_position())
+            if enemy.check_if_shot_allowed():
+                new_bullet: BulletObject = BulletObject(rotation=enemy.find_direction_to_shoot(),
+                                                        speed=self.constants["bullet_speed"])
+                new_bullet.set_position_by_centre(enemy.get_centre_position())
+                self.bullets.append(new_bullet)
+
 
         #Updates all bullet positions.
         for bullet in self.bullets:
