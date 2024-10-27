@@ -43,7 +43,8 @@ class PlayGameState(GameState):
         self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
                                                forward_speed=self.constants["forward_speed"],
                                                backward_speed=self.constants["backward_speed"],
-                                               sideways_speed=self.constants["sideways_speed"],)
+                                               sideways_speed=self.constants["sideways_speed"],
+                                               image="player.png")
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
@@ -113,7 +114,8 @@ class PlayGameState(GameState):
         if self.track_clicks[1]:
             if self.game_variables["time_before_next_shot"] <= 0:
                 new_bullet: BulletObject = BulletObject(rotation=self.entities["player"].rotation,
-                                                        speed=self.constants["bullet_speed"])
+                                                        speed=self.constants["bullet_speed"],
+                                                        image="bullet.png")
                 new_bullet.set_position_by_centre(self.entities["player"].centre)
                 self.bullets.append(new_bullet)
                 self.game_variables["time_before_next_shot"] = self.constants["fire_rate"]
