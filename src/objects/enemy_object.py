@@ -29,3 +29,6 @@ class EnemyObject(GameObject):
         """Updates the enemy."""
         self.max_cooldown = max(self.cooldown - 1, 0)
 
+    def aim_in_direction(self, target_centre) -> float:
+        """Takes in a target's position, and figures out where to aim"""
+
