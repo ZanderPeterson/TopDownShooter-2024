@@ -3,7 +3,7 @@ from typing import Tuple, TypeAlias
 import pygame
 
 from .game_object import GameObject
-from src.utils import find_vector_between
+from src.utils import find_vector_between, random_normal
 
 coords: TypeAlias = Tuple[float, float]
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -37,4 +37,14 @@ class EnemyObject(GameObject):
     def check_if_shot_allowed(self):
         """Checks if the cooldown is at 0"""
         return self.cooldown <= 0
+
+    def shoot_at_location(self, target_centre) -> float:
+        """Takes in a target's position, and figures out where to shoot"""
+        self.cooldown = self.max_cooldown
+
+        #Figures out how off the shot is
+        shoot_direction: float = random_normal(-accuracy, accuracy, 0, accuracy/3, 3)
+
+        #Determines shot direction
+        return shoot_direction + self.rotation
 
