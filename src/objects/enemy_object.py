@@ -20,7 +20,8 @@ class EnemyObject(GameObject):
                  accuracy: float = 0,
                  image: str | None = None) -> None:
         super().__init__(tag="enemy", start_pos=start_pos, rotation=rotation, image=image)
-        self.health = start_hp
-        self.cooldown = cooldown
-        self.accuracy = accuracy
+        self.health: int = start_hp
+        self.max_cooldown: int = cooldown
+        self.cooldown: int = self.max_cooldown
+        self.accuracy: float = accuracy
 
