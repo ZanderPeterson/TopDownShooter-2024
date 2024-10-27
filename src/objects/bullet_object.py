@@ -3,7 +3,7 @@ from typing import Tuple, TypeAlias
 import pygame
 
 from .game_object import GameObject
-from src.utils import check_reflection, move_by_vector
+from src.utils import check_reflection, move_by_vector, find_vector_between
 
 coords: TypeAlias = Tuple[float, float]
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -26,8 +26,12 @@ class BulletObject(GameObject):
         """Returns a vector which is just the (rotation, speed)"""
         return (self.speed, self.rotation)
 
-    def update(self, walls) -> None:
-        """Moved the bullet  by its speed and rotation."""
+    def update(self, walls: list[GameObject], targets: list[GameObject]) -> list[GameObject]:
+        """
+        Moved the bullet  by its speed and rotation.
+        Also calculates the reflections off walls.
+        Also returns any objects that the bullet is colliding with.
+        """
         current_pos: coords = self.get_centre_position()
         travel_by: Vector = self.get_vector()
         first_iteration: bool = True
@@ -60,3 +64,11 @@ class BulletObject(GameObject):
             travel_by = closest_wall[1][1]
             self.set_position_by_centre(move_by_vector(closest_wall[1][0], by_vector=(0.1, travel_by[1])))
             current_pos = self.get_centre_position()
+
+        targets_hit: list[GameObject] = []
+        for target in targets:
+            distance_to_target: float = find_vector_between(self.get_centre_position(), target.get_centre_position())[0]
+            if distance_to_target <= target.img_size[0]:
+                targets_hit.append(target)
+
+        return targets_hit
