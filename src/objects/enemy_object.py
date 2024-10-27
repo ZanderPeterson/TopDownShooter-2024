@@ -34,3 +34,7 @@ class EnemyObject(GameObject):
         self.rotation = find_vector_between(self.position, target_centre)[1]
         return self.rotation
 
+    def check_if_shot_allowed(self):
+        """Checks if the cooldown is at 0"""
+        return self.cooldown <= 0
+
