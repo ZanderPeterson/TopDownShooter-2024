@@ -3,7 +3,7 @@ from typing import Tuple, TypeAlias
 import pygame
 
 from .game_object import GameObject
-from src.utils import move_by_vector, orbit_around_circle, reverse_vector
+from src.utils import find_vector_between
 
 coords: TypeAlias = Tuple[float, float]
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -30,5 +30,7 @@ class EnemyObject(GameObject):
         self.max_cooldown = max(self.cooldown - 1, 0)
 
     def aim_in_direction(self, target_centre) -> float:
-        """Takes in a target's position, and figures out where to aim"""
+        """Takes in a target's position, and figures out where to look"""
+        self.rotation = find_vector_between(self.position, target_centre)[1]
+        return self.rotation
 
