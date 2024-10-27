@@ -25,3 +25,7 @@ class EnemyObject(GameObject):
         self.cooldown: int = self.max_cooldown
         self.accuracy: float = accuracy
 
+    def update(self):
+        """Updates the enemy."""
+        self.max_cooldown = max(self.cooldown - 1, 0)
+
