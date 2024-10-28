@@ -65,6 +65,12 @@ class PlayGameState(GameState):
                                      image="wall_800x800.png"))
         self.walls.append(WallObject(start_pos=(-768, 0),
                                      image="wall_800x800.png"))
+        self.walls.append(WallObject(start_pos=(250, 270),
+                                     image="wall_100x100.png"))
+        self.walls.append(WallObject(start_pos=(350, 270),
+                                     image="wall_100x100.png"))
+        self.walls.append(WallObject(start_pos=(450, 270),
+                                     image="wall_100x100.png"))
 
     @override
     def enter(self) -> None:
@@ -252,8 +258,8 @@ class PlayGameState(GameState):
 
         score_text = self.font.render(f"Score: {self.game_variables["score"]}", True, (255, 255, 255))
         health_text = self.font.render(f"Health: {self.game_variables["health"]}", True, (255, 255, 255))
-        window.blit(score_text, (400 - score_text.get_size()[0]/2, 280 - score_text.get_size()[1]/2))
-        window.blit(health_text, (400 - health_text.get_size()[0] / 2, 320 - health_text.get_size()[1] / 2))
+        window.blit(score_text, (400 - score_text.get_size()[0]/2, 300 - score_text.get_size()[1]/2))
+        window.blit(health_text, (400 - health_text.get_size()[0] / 2, 340 - health_text.get_size()[1] / 2))
 
     @override
     def handle_event(self, event) -> None | str:
