@@ -53,14 +53,18 @@ class PlayGameState(GameState):
         for i in range(1, 20):
             self.walls.append(WallObject.above_wall(self.walls[-1]))
         """
+        self.walls.append(WallObject(start_pos=(0, 0)))
+        self.walls.append(WallObject(start_pos=(0, 608)))
+        self.walls.append(WallObject(start_pos=(768, 0)))
+        self.walls.append(WallObject(start_pos=(768, -608)))
         self.walls.append(WallObject(start_pos=(0, -768),
-                                     image="wall.png"))
+                                     image="wall_800x800.png"))
         self.walls.append(WallObject(start_pos=(0, 608),
-                                     image="wall.png"))
+                                     image="wall_800x800.png"))
         self.walls.append(WallObject(start_pos=(768, 0),
-                                     image="wall.png"))
+                                     image="wall_800x800.png"))
         self.walls.append(WallObject(start_pos=(-768, 0),
-                                     image="wall.png"))
+                                     image="wall_800x800.png"))
 
     @override
     def enter(self) -> None:
@@ -68,6 +72,7 @@ class PlayGameState(GameState):
 
         print(find_radius_of_square(800, 0))
         print(find_radius_of_square(800, pi/4))
+        print(find_radius_of_square(800, pi / 8))
 
 
         for key in self.track_keys.keys():

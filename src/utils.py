@@ -63,7 +63,7 @@ def find_radius_of_square(side_length: float, rotation: float) -> float:
     Finds the distance from the middle to the right side, and accounts for rotation.
     Returned Result varies from side_length/2 to side_length*sqrt(2)/2
     """
-    return side_length*math.sqrt(2)/2 * math.cos(rotation%(math.pi/2) - math.pi/4)
+    return (side_length / 2) / max(abs(math.cos(rotation)), abs(math.sin(rotation)))
 
 def check_collision(still_obj_pos: coords, still_obj_radius_func: Callable[[float], float],
                     moving_obj_pos: coords, moving_obj_radius_func: Callable[[float], float]) -> Vector:
