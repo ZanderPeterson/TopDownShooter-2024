@@ -31,6 +31,7 @@ class PlayGameState(GameState):
             "sideways_speed": 3,
             "bullet_speed": 5,
             "fire_rate": 60,
+            "spawn_rate": 60*5,
         }
         self.game_variables: Dict[str, Any] = {
             "time_before_next_shot": 0,
