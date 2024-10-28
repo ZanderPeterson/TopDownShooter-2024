@@ -68,8 +68,6 @@ class PlayGameState(GameState):
 
     @override
     def enter(self) -> None:
-        print("Entering the Play Game state.")
-
         for key in self.track_keys.keys():
             self.track_keys[key] = False
 
@@ -103,7 +101,7 @@ class PlayGameState(GameState):
 
     @override
     def exit(self) -> None:
-        print("Exiting the Play Game state.")
+        pass
 
     @override
     def update(self) -> None | str:
@@ -229,7 +227,6 @@ class PlayGameState(GameState):
 
         # Check player health
         if self.game_variables["health"] <= 0:
-            print(self.game_variables["score"])
             return "GameOver"
 
     @override

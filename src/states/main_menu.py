@@ -18,13 +18,12 @@ class MainMenuState(GameState):
 
     @override
     def enter(self) -> None:
-        print("Entering the Main Menu state.")
         if self.score > self.high_score:
             self.high_score = self.score
 
     @override
     def exit(self) -> None:
-        print("Exiting the Main Menu state.")
+        pass
 
     @override
     def render(self, window) -> None:
@@ -45,6 +44,5 @@ class MainMenuState(GameState):
     @override
     def handle_event(self, event) -> None | str:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            print("Spacebar hit")
             return "PlayGame"
         return None
