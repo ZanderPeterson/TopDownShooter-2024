@@ -1,6 +1,7 @@
 # This file is for functions I might need, such as Vector Mathematics
 
 import math
+import random
 
 from typing import Callable, List, Tuple, TypeAlias
 
@@ -202,3 +203,16 @@ def check_reflection(wall_obj_pos: coords, wall_obj_rotation: float, wall_obj_si
     angle_of_incidence: float = math.pi/2 - math.acos((bullet_travel_before_collision**2 + closest_side**2 - opposite**2)/(2*bullet_travel_before_collision*closest_side))
     reflected_ray: float = (bullet_travel_by[1] + angle_of_incidence*2*add_or_sub + math.pi)%(2*math.pi)
     return (collision[0], (bullet_travel_after_collision, reflected_ray))
+
+def random_normal(min_value: float, max_value: float, mean: float, deviation: float, max_tries: int = 10) -> float:
+    """
+    Generates a pseudo-random normal distribution.
+    Unstable behaviour may be caused if the mean fails to fall between min_value & max_value.
+    If max_tries is reached, it instead returns a triangular distribution.
+    """
+    for i in range(1, max_tries):
+        random_number: float = random.gauss(mean, deviation)
+        if min_value <= random_number <= max_value:
+            return random_number
+    #If it gave up:
+    return random.triangular(min_value, max_value, mean)

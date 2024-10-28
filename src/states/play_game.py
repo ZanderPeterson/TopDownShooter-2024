@@ -1,10 +1,11 @@
 from math import pi
+from random import randint
 from typing import Any, Dict, List, override, Tuple, TypeAlias
 
 import pygame
 
 from .game_state import GameState
-from src.objects import GameObject, PlayerObject, BulletObject, WallObject
+from src.objects import GameObject, PlayerObject, BulletObject, WallObject, EnemyObject
 from src.utils import check_collision, find_radius_of_square, find_vector_between, move_by_vector, orbit_around_circle
 
 Vector: TypeAlias = Tuple[float, float] #Magnitude, Direction
@@ -31,20 +32,28 @@ class PlayGameState(GameState):
             "sideways_speed": 3,
             "bullet_speed": 5,
             "fire_rate": 60,
+            "enemy_fire_rate": 200,
+            "spawn_rate": 60*5,
         }
         self.game_variables: Dict[str, Any] = {
             "time_before_next_shot": 0,
+            "time_before_next_spawn": 0,
         }
 
         self.entities: Dict[str, GameObject] = {}
+        self.enemies: List[EnemyObject] = []
         self.bullets: List[BulletObject] = []
         self.walls: List[WallObject] = []
+
+        self.enemy_spawn_locations: List[Tuple[bool, coords]] = [
+            (False, (400, 400)),
+            (False, (200, 200)),
+        ]
 
         self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
                                                forward_speed=self.constants["forward_speed"],
                                                backward_speed=self.constants["backward_speed"],
-                                               sideways_speed=self.constants["sideways_speed"],
-                                               image="player.png")
+                                               sideways_speed=self.constants["sideways_speed"],)
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
@@ -110,19 +119,81 @@ class PlayGameState(GameState):
         if self.game_variables["time_before_next_shot"] > 0:
             self.game_variables["time_before_next_shot"] -= 1
 
-        #Spawn Projectiles Code
+        #Spawn Player's Projectiles Code
         if self.track_clicks[1]:
             if self.game_variables["time_before_next_shot"] <= 0:
                 new_bullet: BulletObject = BulletObject(rotation=self.entities["player"].rotation,
                                                         speed=self.constants["bullet_speed"],
-                                                        image="bullet.png")
+                                                        shot_by="player",
+                                                        grace_period=10)
                 new_bullet.set_position_by_centre(self.entities["player"].centre)
                 self.bullets.append(new_bullet)
                 self.game_variables["time_before_next_shot"] = self.constants["fire_rate"]
 
+        #Update Enemies Code (and spawn the Enemies' Projectiles)
+        for enemy in self.entities.values():
+            if enemy.tag != "enemy":
+                #Enemy is actually something else, like the player
+                continue
+            enemy.update()
+            enemy.aim_in_direction(self.entities["player"].get_centre_position())
+            if enemy.check_if_shot_allowed():
+                new_bullet: BulletObject = BulletObject(rotation=enemy.find_direction_to_shoot(),
+                                                        speed=self.constants["bullet_speed"],
+                                                        shot_by=None,
+                                                        grace_period=10)
+                new_bullet.set_position_by_centre(enemy.get_centre_position())
+                self.bullets.append(new_bullet)
+
+
         #Updates all bullet positions.
         for bullet in self.bullets:
-            bullet.update(self.walls)
+            hit_targets: List[GameObject | PlayerObject | EnemyObject] = bullet.update(self.walls, list(self.entities.values()))
+            for target in hit_targets:
+                #Something got hit
+                self.bullets.pop(self.bullets.index(bullet))
+                if target.tag == "player":
+                    #Player got hit
+                    pass
+                elif target.tag == "enemy":
+                    #An enemy got hit
+                    target.health -= 1
+
+        #Remove Enemies
+        entities_to_remove: List[str] = []
+        for key, entity in self.entities.items():
+            if entity.tag != "enemy":
+                # Enemy is actually something else, like the player
+                continue
+            enemy: EnemyObject | GameObject = entity
+            #Check if enemy is dead
+            if enemy.health <= 0:
+                for i, location in enumerate(self.enemy_spawn_locations):
+                    if location[1] == enemy.position:
+                        self.enemy_spawn_locations[int(key)] = (False, location[1])
+                entities_to_remove.append(key)
+        for entity in entities_to_remove:
+            self.entities.pop(entity)
+
+        # Countdown the time before next spawn
+        if self.game_variables["time_before_next_spawn"] > 0:
+            self.game_variables["time_before_next_spawn"] -= 1
+
+        if self.game_variables["time_before_next_spawn"] <= 0:
+            self.game_variables["time_before_next_spawn"] = self.constants["spawn_rate"]
+            #Spawn Enemies
+            available_spots: List[int] = []
+            for i, spot in enumerate(self.enemy_spawn_locations):
+                if not spot[0]:
+                    #Spot is unoccupied
+                    available_spots.append(i)
+            if len(available_spots) > 0:
+                chosen_spot: int = available_spots[randint(0, len(available_spots) - 1)]
+                self.enemy_spawn_locations[chosen_spot] = (True, self.enemy_spawn_locations[chosen_spot][1])
+                self.entities[str(chosen_spot)] = EnemyObject(start_pos=self.enemy_spawn_locations[chosen_spot][1],
+                                                              start_hp=3,
+                                                              cooldown=self.constants["enemy_fire_rate"],
+                                                              accuracy=0.5)
 
     @override
     def render(self, window) -> None:
@@ -132,6 +203,10 @@ class PlayGameState(GameState):
         #Loops through all the entities and renders them to the screen.
         for entity in self.entities.values():
             window.blit(entity.render_image(), entity.get_image_position())
+
+        #Loops through all the enemies and renders them to the screen.
+        for enemy in self.enemies:
+            window.blit(enemy.render_image(), enemy.get_image_position())
 
         # Loops through all the bullets and renders them to the screen.
         for bullet in self.bullets:
