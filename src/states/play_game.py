@@ -76,11 +76,6 @@ class PlayGameState(GameState):
     def enter(self) -> None:
         print("Entering the Play Game state.")
 
-        print(find_radius_of_square(800, 0))
-        print(find_radius_of_square(800, pi/4))
-        print(find_radius_of_square(800, pi / 8))
-
-
         for key in self.track_keys.keys():
             self.track_keys[key] = False
 
