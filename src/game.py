@@ -35,6 +35,7 @@ class Game():
             return None
         if returned_value == "GameOver":
             self.change_state("main_menu")
+            self.states["main_menu"].score = self.states["play_game"].game_variables["score"]
 
     def render(self) -> None:
         self.current_state.render(self.window)
