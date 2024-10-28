@@ -41,14 +41,23 @@ class PlayGameState(GameState):
         self.bullets: List[BulletObject] = []
         self.walls: List[WallObject] = []
 
+        self.enemy_spawn_locations: List[Tuple[bool, coords]] = [
+            (True, (400, 400)),
+            (False, (200, 200)),
+        ]
+
         self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
                                                forward_speed=self.constants["forward_speed"],
                                                backward_speed=self.constants["backward_speed"],
                                                sideways_speed=self.constants["sideways_speed"],)
-        self.enemies.append(EnemyObject(start_pos=(400, 400),
-                                        start_hp=5,
-                                        cooldown=120,
-                                        accuracy=0.5))
+        #self.enemies.append(EnemyObject(start_pos=(400, 400),
+        #                                start_hp=5,
+        #                                cooldown=120,
+        #                                accuracy=0.5))
+        self.entities["0"] = EnemyObject(start_pos=(400, 400),
+                                         start_hp=5,
+                                         cooldown=120,
+                                         accuracy=0.5)
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
@@ -126,7 +135,10 @@ class PlayGameState(GameState):
                 self.game_variables["time_before_next_shot"] = self.constants["fire_rate"]
 
         #Update Enemies Code (and spawn the Enemies' Projectiles)
-        for enemy in self.enemies:
+        for enemy in self.entities.values():
+            if enemy.tag != "enemy":
+                #Enemy is actually something else, like the player
+                continue
             enemy.update()
             enemy.aim_in_direction(self.entities["player"].get_centre_position())
             if enemy.check_if_shot_allowed():
@@ -140,8 +152,7 @@ class PlayGameState(GameState):
 
         #Updates all bullet positions.
         for bullet in self.bullets:
-            hit_targets: List[GameObject | PlayerObject | EnemyObject] = bullet.update(self.walls,
-                                                                                       self.enemies + list(self.entities.values()))
+            hit_targets: List[GameObject | PlayerObject | EnemyObject] = bullet.update(self.walls, list(self.entities.values()))
             for target in hit_targets:
                 #Something got hit
                 self.bullets.pop(self.bullets.index(bullet))
@@ -151,10 +162,22 @@ class PlayGameState(GameState):
                 elif target.tag == "enemy":
                     #An enemy got hit
                     target.health -= 1
-                    print(target.health)
-                    if target.health <= 0:
-                        #Enemy is dead
-                        self.enemies.pop(self.enemies.index(target))
+
+        #Remove Enemies
+        entities_to_remove: List[str] = []
+        for key, entity in self.entities.items():
+            if entity.tag != "enemy":
+                # Enemy is actually something else, like the player
+                continue
+            enemy: EnemyObject | GameObject = entity
+            #Check if enemy is dead
+            if enemy.health <= 0:
+                for i, location in enumerate(self.enemy_spawn_locations):
+                    if location[1] == enemy.position:
+                        self.enemy_spawn_locations[int(key)] = (False, location[1])
+                entities_to_remove.append(key)
+        for entity in entities_to_remove:
+            self.entities.pop(entity)
 
     @override
     def render(self, window) -> None:
