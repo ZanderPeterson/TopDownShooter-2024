@@ -118,7 +118,9 @@ class PlayGameState(GameState):
         if self.track_clicks[1]:
             if self.game_variables["time_before_next_shot"] <= 0:
                 new_bullet: BulletObject = BulletObject(rotation=self.entities["player"].rotation,
-                                                        speed=self.constants["bullet_speed"])
+                                                        speed=self.constants["bullet_speed"],
+                                                        shot_by="player",
+                                                        grace_period=10)
                 new_bullet.set_position_by_centre(self.entities["player"].centre)
                 self.bullets.append(new_bullet)
                 self.game_variables["time_before_next_shot"] = self.constants["fire_rate"]
@@ -129,7 +131,9 @@ class PlayGameState(GameState):
             enemy.aim_in_direction(self.entities["player"].get_centre_position())
             if enemy.check_if_shot_allowed():
                 new_bullet: BulletObject = BulletObject(rotation=enemy.find_direction_to_shoot(),
-                                                        speed=self.constants["bullet_speed"])
+                                                        speed=self.constants["bullet_speed"],
+                                                        shot_by=None,
+                                                        grace_period=10)
                 new_bullet.set_position_by_centre(enemy.get_centre_position())
                 self.bullets.append(new_bullet)
 
@@ -139,12 +143,15 @@ class PlayGameState(GameState):
             hit_targets: List[GameObject | PlayerObject | EnemyObject] = bullet.update(self.walls,
                                                                                        self.enemies + list(self.entities.values()))
             for target in hit_targets:
+                #Something got hit
+                self.bullets.pop(self.bullets.index(bullet))
                 if target.tag == "player":
                     #Player got hit
                     pass
                 elif target.tag == "enemy":
                     #An enemy got hit
                     target.health -= 1
+                    print(target.health)
                     if target.health <= 0:
                         #Enemy is dead
                         self.enemies.pop(self.enemies.index(target))

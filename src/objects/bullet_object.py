@@ -16,11 +16,15 @@ class BulletObject(GameObject):
                  start_pos: coords = (0, 0),
                  rotation: float = 0,
                  speed: float | None = None,
+                 shot_by: str | None = None,
+                 grace_period: int = 0,
                  image: str | None = None) -> None:
         super().__init__(tag="bullet", start_pos=start_pos, rotation=rotation, image=image)
         if not speed:
             speed = 0
         self.speed: float = speed
+        self.shot_by: str | None = shot_by
+        self.grace_period: int = grace_period
 
     def get_vector(self) -> Vector:
         """Returns a vector which is just the (rotation, speed)"""
@@ -68,7 +72,12 @@ class BulletObject(GameObject):
         targets_hit: list[GameObject] = []
         for target in targets:
             distance_to_target: float = find_vector_between(self.get_centre_position(), target.get_centre_position())[0]
-            if distance_to_target <= target.img_size[0]:
-                targets_hit.append(target)
+            if distance_to_target >= target.img_size[0]:
+                continue
+            if (target.tag == self.shot_by or self.shot_by is None) and self.grace_period > 0:
+                #Grace period applies. Target is not hit.
+                continue
+            targets_hit.append(target)
 
+        self.grace_period = max(self.grace_period - 1, 0)
         return targets_hit
