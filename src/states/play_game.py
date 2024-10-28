@@ -249,8 +249,8 @@ class PlayGameState(GameState):
         for wall in self.walls:
             window.blit(wall.render_image(), wall.get_image_position())
 
-        score_text = self.font.render(f"Score: {self.game_variables["score"]}", True, (255, 255, 255))
-        health_text = self.font.render(f"Health: {self.game_variables["health"]}", True, (255, 255, 255))
+        score_text = self.font.render(f"Score: {self.game_variables["score"]}", True, (254, 255, 240))
+        health_text = self.font.render(f"Health: {self.game_variables["health"]}", True, (254, 255, 240))
         window.blit(score_text, (400 - score_text.get_size()[0]/2, 300 - score_text.get_size()[1]/2))
         window.blit(health_text, (400 - health_text.get_size()[0] / 2, 340 - health_text.get_size()[1] / 2))
 

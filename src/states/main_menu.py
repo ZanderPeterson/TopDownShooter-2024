@@ -30,11 +30,11 @@ class MainMenuState(GameState):
     def render(self, window) -> None:
         window.fill((0, 0, 0))
 
-        title_text = self.h1.render(str(Settings.WINDOW_CAPTION), True, (255, 255, 255))
-        subtitle_text = self.h3.render("Created by Zander Peterson - Version 1.0", True, (200, 200, 200))
-        score_text = self.h2.render(f"Previous Score: {self.score}", True, (200, 200, 200))
-        high_score_text = self.h2.render(f"Highest Score: {self.high_score}", True, (200, 200, 200))
-        how_to_text = self.h1.render("Press [Space] To Start", True, (255, 255, 255))
+        title_text = self.h1.render(str(Settings.WINDOW_CAPTION), True, (254, 255, 240))
+        subtitle_text = self.h3.render("Created by Zander Peterson - Version 1.0", True, (254, 255, 240))
+        score_text = self.h2.render(f"Previous Score: {self.score}", True, (254, 255, 240))
+        high_score_text = self.h2.render(f"Highest Score: {self.high_score}", True, (254, 255, 240))
+        how_to_text = self.h1.render("Press [Space] To Start", True, (254, 255, 240))
 
         window.blit(title_text, (400 - title_text.get_size()[0] / 2, 100 - title_text.get_size()[1] / 2))
         window.blit(subtitle_text, (400 - subtitle_text.get_size()[0] / 2, 130 - subtitle_text.get_size()[1] / 2))
