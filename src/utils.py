@@ -147,7 +147,7 @@ def check_reflection(wall_obj_pos: coords, wall_obj_rotation: float, wall_obj_si
 
     bullet_line: Tuple[coords, coords] = (bullet_pos, move_by_vector(bullet_pos, bullet_travel_by))
 
-    old_corner: coords = wall_obj_corner
+    old_corner: coords = (wall_obj_corner[0], wall_obj_corner[1]+32)
     collision_results: List[Tuple[coords, bool, float, float] | None] = []
     wall_corner_positions: List[coords] = []
 
