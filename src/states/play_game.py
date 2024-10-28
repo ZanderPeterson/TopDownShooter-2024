@@ -173,7 +173,7 @@ class PlayGameState(GameState):
                 #Enemy is actually something else, like the player
                 continue
             enemy.update()
-            enemy.aim_in_direction(self.entities["player"].get_centre_position())
+            enemy.aim_in_direction(self.entities["player"].position)
             if enemy.check_if_shot_allowed():
                 new_bullet: BulletObject = BulletObject(rotation=enemy.find_direction_to_shoot(),
                                                         speed=self.constants["bullet_speed"],

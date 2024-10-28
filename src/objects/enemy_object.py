@@ -29,9 +29,9 @@ class EnemyObject(GameObject):
         """Updates the enemy."""
         self.cooldown = max(self.cooldown - 1, 0)
 
-    def aim_in_direction(self, target_centre) -> float:
+    def aim_in_direction(self, target_pos) -> float:
         """Takes in a target's position, and figures out where to look"""
-        self.rotation = find_vector_between(self.position, target_centre)[1]
+        self.rotation = find_vector_between(self.position, target_pos)[1]
         return self.rotation
 
     def check_if_shot_allowed(self):
