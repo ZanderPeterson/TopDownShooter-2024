@@ -62,6 +62,7 @@ class PlayGameState(GameState):
             self.track_clicks[click] = False
 
         self.game_variables = {
+            "score": 0,
             "time_before_next_shot": 0,
             "time_before_next_spawn": 0,
             "health": 10,
@@ -87,6 +88,9 @@ class PlayGameState(GameState):
 
     @override
     def update(self) -> None | str:
+        #Updates the score
+        self.game_variables["score"] += 1
+
         #Gets position of the mouse, and finds the Vector from the centre of the player to it.
         mouse_pos = pygame.mouse.get_pos()
         vector_to_cursor: Vector = find_vector_between(self.entities["player"].centre, mouse_pos)
@@ -206,6 +210,7 @@ class PlayGameState(GameState):
 
         # Check player health
         if self.game_variables["health"] <= 0:
+            print(self.game_variables["score"])
             return "GameOver"
 
     @override
