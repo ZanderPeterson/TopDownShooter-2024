@@ -205,9 +205,7 @@ class PlayGameState(GameState):
                                                               image="enemy.png")
 
         # Check player health
-        print(self.game_variables["health"])
         if self.game_variables["health"] <= 0:
-            print("Game Over, Bozo")
             return "GameOver"
 
     @override
