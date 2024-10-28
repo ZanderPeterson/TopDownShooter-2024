@@ -42,6 +42,7 @@ class PlayGameState(GameState):
         self.walls: List[WallObject] = []
         self.font: pygame.font.FontType = pygame.font.Font(None, 50)
 
+        """
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
             self.walls.append(WallObject.right_of_wall(self.walls[-1]))
@@ -51,10 +52,23 @@ class PlayGameState(GameState):
             self.walls.append(WallObject.left_of_wall(self.walls[-1]))
         for i in range(1, 20):
             self.walls.append(WallObject.above_wall(self.walls[-1]))
+        """
+        self.walls.append(WallObject(start_pos=(0, -768),
+                                     image="wall.png"))
+        self.walls.append(WallObject(start_pos=(0, 608),
+                                     image="wall.png"))
+        self.walls.append(WallObject(start_pos=(768, 0),
+                                     image="wall.png"))
+        self.walls.append(WallObject(start_pos=(-768, 0),
+                                     image="wall.png"))
 
     @override
     def enter(self) -> None:
         print("Entering the Play Game state.")
+
+        print(find_radius_of_square(800, 0))
+        print(find_radius_of_square(800, pi/4))
+
 
         for key in self.track_keys.keys():
             self.track_keys[key] = False
