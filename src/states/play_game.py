@@ -1,4 +1,5 @@
 from math import pi
+from random import randint
 from typing import Any, Dict, List, override, Tuple, TypeAlias
 
 import pygame
@@ -31,10 +32,12 @@ class PlayGameState(GameState):
             "sideways_speed": 3,
             "bullet_speed": 5,
             "fire_rate": 60,
+            "enemy_fire_rate": 200,
             "spawn_rate": 60*5,
         }
         self.game_variables: Dict[str, Any] = {
             "time_before_next_shot": 0,
+            "time_before_next_spawn": 0,
         }
 
         self.entities: Dict[str, GameObject] = {}
@@ -43,7 +46,7 @@ class PlayGameState(GameState):
         self.walls: List[WallObject] = []
 
         self.enemy_spawn_locations: List[Tuple[bool, coords]] = [
-            (True, (400, 400)),
+            (False, (400, 400)),
             (False, (200, 200)),
         ]
 
@@ -51,14 +54,6 @@ class PlayGameState(GameState):
                                                forward_speed=self.constants["forward_speed"],
                                                backward_speed=self.constants["backward_speed"],
                                                sideways_speed=self.constants["sideways_speed"],)
-        #self.enemies.append(EnemyObject(start_pos=(400, 400),
-        #                                start_hp=5,
-        #                                cooldown=120,
-        #                                accuracy=0.5))
-        self.entities["0"] = EnemyObject(start_pos=(400, 400),
-                                         start_hp=5,
-                                         cooldown=120,
-                                         accuracy=0.5)
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
@@ -179,6 +174,26 @@ class PlayGameState(GameState):
                 entities_to_remove.append(key)
         for entity in entities_to_remove:
             self.entities.pop(entity)
+
+        # Countdown the time before next spawn
+        if self.game_variables["time_before_next_spawn"] > 0:
+            self.game_variables["time_before_next_spawn"] -= 1
+
+        if self.game_variables["time_before_next_spawn"] <= 0:
+            self.game_variables["time_before_next_spawn"] = self.constants["spawn_rate"]
+            #Spawn Enemies
+            available_spots: List[int] = []
+            for i, spot in enumerate(self.enemy_spawn_locations):
+                if not spot[0]:
+                    #Spot is unoccupied
+                    available_spots.append(i)
+            if len(available_spots) > 0:
+                chosen_spot: int = available_spots[randint(0, len(available_spots) - 1)]
+                self.enemy_spawn_locations[chosen_spot] = (True, self.enemy_spawn_locations[chosen_spot][1])
+                self.entities[str(chosen_spot)] = EnemyObject(start_pos=self.enemy_spawn_locations[chosen_spot][1],
+                                                              start_hp=3,
+                                                              cooldown=self.constants["enemy_fire_rate"],
+                                                              accuracy=0.5)
 
     @override
     def render(self, window) -> None:
