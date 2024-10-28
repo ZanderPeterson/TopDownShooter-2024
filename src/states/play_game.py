@@ -33,7 +33,7 @@ class PlayGameState(GameState):
             "bullet_speed": 8,
             "fire_rate": 60,
             "enemy_fire_rate": 60*4,
-            "spawn_rate": 60*8,
+            "spawn_rate": 60*6,
         }
         self.game_variables: Dict[str, Any] = {}
         self.enemy_spawn_locations: List[Tuple[bool, coords]] = []
@@ -84,8 +84,12 @@ class PlayGameState(GameState):
         }
 
         self.enemy_spawn_locations = [
-            (False, (400, 400)),
-            (False, (200, 200)),
+            (False, (200-16, 160-16)),
+            (False, (400-16, 160-16)),
+            (False, (600-16, 160-16)),
+            (False, (200-16, 480-16)),
+            (False, (400-16, 480-16)),
+            (False, (600-16, 480-16))
         ]
 
         self.entities = {}
