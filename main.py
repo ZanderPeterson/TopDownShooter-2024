@@ -1,12 +1,11 @@
 # This file is intended for running the game loop
+import os
+import sys
 
 import pygame
 
 from src.game import Game
 from src.settings import Settings
-
-import os
-import sys
 
 #Set the working directory to the folder where main.py is located.
 #This means things like images can be found by the code.
@@ -18,6 +17,7 @@ def main() -> None:
     height: int = Settings.WINDOW_HEIGHT
     FPS: int = Settings.FPS
 
+    #Initialise the PyGame window.
     pygame.init()
     window = pygame.display.set_mode((width, height))
     game = Game(window)
