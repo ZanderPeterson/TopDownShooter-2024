@@ -23,14 +23,19 @@ class Game():
         self.current_state.enter()
 
     def handle_event(self, event) -> None:
-        returned_value = self.current_state.handle_event(event)
-        if not returned_value:
+        returned_value: None | str = self.current_state.handle_event(event)
+        if returned_value is None:
             return None
         if returned_value == "PlayGame":
             self.change_state("play_game")
 
     def update(self) -> None:
-        self.current_state.update()
+        returned_value: None | str = self.current_state.update()
+        if returned_value is None:
+            return None
+        if returned_value == "GameOver":
+            self.change_state("main_menu")
+            self.states["main_menu"].score = self.states["play_game"].game_variables["score"]
 
     def render(self) -> None:
         self.current_state.render(self.window)

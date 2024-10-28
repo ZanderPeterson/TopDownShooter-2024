@@ -32,29 +32,15 @@ class PlayGameState(GameState):
             "sideways_speed": 3,
             "bullet_speed": 5,
             "fire_rate": 60,
-            "enemy_fire_rate": 200,
-            "spawn_rate": 60*5,
+            "enemy_fire_rate": 60*4,
+            "spawn_rate": 60*10,
         }
-        self.game_variables: Dict[str, Any] = {
-            "time_before_next_shot": 0,
-            "time_before_next_spawn": 0,
-        }
-
+        self.game_variables: Dict[str, Any] = {}
+        self.enemy_spawn_locations: List[Tuple[bool, coords]] = []
         self.entities: Dict[str, GameObject] = {}
-        self.enemies: List[EnemyObject] = []
         self.bullets: List[BulletObject] = []
         self.walls: List[WallObject] = []
-
-        self.enemy_spawn_locations: List[Tuple[bool, coords]] = [
-            (False, (400, 400)),
-            (False, (200, 200)),
-        ]
-
-        self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
-                                               forward_speed=self.constants["forward_speed"],
-                                               backward_speed=self.constants["backward_speed"],
-                                               sideways_speed=self.constants["sideways_speed"],
-                                               image="player.png")
+        self.font: pygame.font.FontType = pygame.font.Font(None, 50)
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
@@ -76,12 +62,36 @@ class PlayGameState(GameState):
         for click in self.track_clicks.keys():
             self.track_clicks[click] = False
 
+        self.game_variables = {
+            "score": 0,
+            "time_before_next_shot": 0,
+            "time_before_next_spawn": 0,
+            "health": 10,
+        }
+
+        self.enemy_spawn_locations = [
+            (False, (400, 400)),
+            (False, (200, 200)),
+        ]
+
+        self.entities = {}
+        self.bullets = []
+
+        self.entities["player"] = PlayerObject(start_pos=(100 - 16, 100 - 16),
+                                               forward_speed=self.constants["forward_speed"],
+                                               backward_speed=self.constants["backward_speed"],
+                                               sideways_speed=self.constants["sideways_speed"],
+                                               image="player.png")
+
     @override
     def exit(self) -> None:
         print("Exiting the Play Game state.")
 
     @override
-    def update(self) -> None:
+    def update(self) -> None | str:
+        #Updates the score
+        self.game_variables["score"] += 1
+
         #Gets position of the mouse, and finds the Vector from the centre of the player to it.
         mouse_pos = pygame.mouse.get_pos()
         vector_to_cursor: Vector = find_vector_between(self.entities["player"].centre, mouse_pos)
@@ -157,7 +167,7 @@ class PlayGameState(GameState):
                 self.bullets.pop(self.bullets.index(bullet))
                 if target.tag == "player":
                     #Player got hit
-                    pass
+                    self.game_variables["health"] -= 1
                 elif target.tag == "enemy":
                     #An enemy got hit
                     target.health -= 1
@@ -199,6 +209,11 @@ class PlayGameState(GameState):
                                                               accuracy=0.5,
                                                               image="enemy.png")
 
+        # Check player health
+        if self.game_variables["health"] <= 0:
+            print(self.game_variables["score"])
+            return "GameOver"
+
     @override
     def render(self, window) -> None:
         #Renders the background.
@@ -208,10 +223,6 @@ class PlayGameState(GameState):
         for entity in self.entities.values():
             window.blit(entity.render_image(), entity.get_image_position())
 
-        #Loops through all the enemies and renders them to the screen.
-        for enemy in self.enemies:
-            window.blit(enemy.render_image(), enemy.get_image_position())
-
         # Loops through all the bullets and renders them to the screen.
         for bullet in self.bullets:
             window.blit(bullet.render_image(), bullet.get_image_position())
@@ -219,6 +230,11 @@ class PlayGameState(GameState):
         # Loops through all the bullets and renders them to the screen.
         for wall in self.walls:
             window.blit(wall.render_image(), wall.get_image_position())
+
+        score_text = self.font.render(f"Score: {self.game_variables["score"]}", True, (255, 255, 255))
+        health_text = self.font.render(f"Health: {self.game_variables["health"]}", True, (255, 255, 255))
+        window.blit(score_text, (400 - score_text.get_size()[0]/2, 280 - score_text.get_size()[1]/2))
+        window.blit(health_text, (400 - health_text.get_size()[0] / 2, 320 - health_text.get_size()[1] / 2))
 
     @override
     def handle_event(self, event) -> None | str:
