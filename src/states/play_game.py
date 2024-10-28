@@ -82,7 +82,7 @@ class PlayGameState(GameState):
         print("Exiting the Play Game state.")
 
     @override
-    def update(self) -> None:
+    def update(self) -> None | str:
         #Gets position of the mouse, and finds the Vector from the centre of the player to it.
         mouse_pos = pygame.mouse.get_pos()
         vector_to_cursor: Vector = find_vector_between(self.entities["player"].centre, mouse_pos)
@@ -158,7 +158,7 @@ class PlayGameState(GameState):
                 self.bullets.pop(self.bullets.index(bullet))
                 if target.tag == "player":
                     #Player got hit
-                    pass
+                    self.game_variables["health"] -= 1
                 elif target.tag == "enemy":
                     #An enemy got hit
                     target.health -= 1
@@ -199,6 +199,12 @@ class PlayGameState(GameState):
                                                               cooldown=self.constants["enemy_fire_rate"],
                                                               accuracy=0.5,
                                                               image="enemy.png")
+
+        # Check player health
+        print(self.game_variables["health"])
+        if self.game_variables["health"] <= 0:
+            print("Game Over, Bozo")
+            return "GameOver"
 
     @override
     def render(self, window) -> None:
