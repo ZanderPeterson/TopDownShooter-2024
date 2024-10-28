@@ -40,6 +40,7 @@ class PlayGameState(GameState):
         self.entities: Dict[str, GameObject] = {}
         self.bullets: List[BulletObject] = []
         self.walls: List[WallObject] = []
+        self.font: pygame.font.FontType = pygame.font.Font(None, 50)
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
@@ -229,6 +230,11 @@ class PlayGameState(GameState):
         # Loops through all the bullets and renders them to the screen.
         for wall in self.walls:
             window.blit(wall.render_image(), wall.get_image_position())
+
+        score_text = self.font.render(f"Score: {self.game_variables["score"]}", True, (255, 255, 255))
+        health_text = self.font.render(f"Health: {self.game_variables["health"]}", True, (255, 255, 255))
+        window.blit(score_text, (400 - score_text.get_size()[0]/2, 280 - score_text.get_size()[1]/2))
+        window.blit(health_text, (400 - health_text.get_size()[0] / 2, 320 - health_text.get_size()[1] / 2))
 
     @override
     def handle_event(self, event) -> None | str:
