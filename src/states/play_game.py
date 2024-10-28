@@ -252,7 +252,7 @@ class PlayGameState(GameState):
         window.blit(health_text, (400 - health_text.get_size()[0] / 2, 340 - health_text.get_size()[1] / 2))
 
     @override
-    def handle_event(self, event) -> None | str:
+    def handle_event(self, event) -> None:
         #Record down keypresses.
         if event.type == pygame.KEYDOWN and event.key in self.track_keys:
             self.track_keys[event.key] = True
