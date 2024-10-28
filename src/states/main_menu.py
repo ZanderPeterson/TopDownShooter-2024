@@ -18,8 +18,7 @@ class MainMenuState(GameState):
 
     @override
     def enter(self) -> None:
-        if self.score > self.high_score:
-            self.high_score = self.score
+        pass
 
     @override
     def exit(self) -> None:
@@ -28,6 +27,9 @@ class MainMenuState(GameState):
     @override
     def render(self, window) -> None:
         window.fill((0, 0, 0))
+
+        if self.score > self.high_score:
+            self.high_score = self.score
 
         title_text = self.h1.render(str(Settings.WINDOW_CAPTION), True, (254, 255, 240))
         subtitle_text = self.h3.render("Created by Zander Peterson - Version 1.0", True, (254, 255, 240))
