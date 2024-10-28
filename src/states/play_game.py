@@ -35,27 +35,11 @@ class PlayGameState(GameState):
             "enemy_fire_rate": 60*4,
             "spawn_rate": 60*10,
         }
-        self.game_variables: Dict[str, Any] = {
-            "time_before_next_shot": 0,
-            "time_before_next_spawn": 0,
-            "health": 10,
-        }
-
+        self.game_variables: Dict[str, Any] = {}
+        self.enemy_spawn_locations: List[Tuple[bool, coords]] = []
         self.entities: Dict[str, GameObject] = {}
-        self.enemies: List[EnemyObject] = []
         self.bullets: List[BulletObject] = []
         self.walls: List[WallObject] = []
-
-        self.enemy_spawn_locations: List[Tuple[bool, coords]] = [
-            (False, (400, 400)),
-            (False, (200, 200)),
-        ]
-
-        self.entities["player"] = PlayerObject(start_pos=(100-16, 100-16),
-                                               forward_speed=self.constants["forward_speed"],
-                                               backward_speed=self.constants["backward_speed"],
-                                               sideways_speed=self.constants["sideways_speed"],
-                                               image="player.png")
 
         self.walls.append(WallObject((0, 0)))
         for i in range(1, 25):
@@ -76,6 +60,26 @@ class PlayGameState(GameState):
 
         for click in self.track_clicks.keys():
             self.track_clicks[click] = False
+
+        self.game_variables = {
+            "time_before_next_shot": 0,
+            "time_before_next_spawn": 0,
+            "health": 10,
+        }
+
+        self.enemy_spawn_locations = [
+            (False, (400, 400)),
+            (False, (200, 200)),
+        ]
+
+        self.entities = {}
+        self.bullets = []
+
+        self.entities["player"] = PlayerObject(start_pos=(100 - 16, 100 - 16),
+                                               forward_speed=self.constants["forward_speed"],
+                                               backward_speed=self.constants["backward_speed"],
+                                               sideways_speed=self.constants["sideways_speed"],
+                                               image="player.png")
 
     @override
     def exit(self) -> None:
@@ -214,10 +218,6 @@ class PlayGameState(GameState):
         #Loops through all the entities and renders them to the screen.
         for entity in self.entities.values():
             window.blit(entity.render_image(), entity.get_image_position())
-
-        #Loops through all the enemies and renders them to the screen.
-        for enemy in self.enemies:
-            window.blit(enemy.render_image(), enemy.get_image_position())
 
         # Loops through all the bullets and renders them to the screen.
         for bullet in self.bullets:
