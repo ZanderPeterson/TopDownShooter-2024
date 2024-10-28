@@ -63,7 +63,7 @@ def find_radius_of_square(side_length: float, rotation: float) -> float:
     Finds the distance from the middle to the right side, and accounts for rotation.
     Returned Result varies from side_length/2 to side_length*sqrt(2)/2
     """
-    return side_length*math.sqrt(2)/2 * math.cos(rotation%(math.pi/2) - math.pi/4)
+    return (side_length / 2) / max(abs(math.cos(rotation)), abs(math.sin(rotation)))
 
 def check_collision(still_obj_pos: coords, still_obj_radius_func: Callable[[float], float],
                     moving_obj_pos: coords, moving_obj_radius_func: Callable[[float], float]) -> Vector:
@@ -147,7 +147,7 @@ def check_reflection(wall_obj_pos: coords, wall_obj_rotation: float, wall_obj_si
 
     bullet_line: Tuple[coords, coords] = (bullet_pos, move_by_vector(bullet_pos, bullet_travel_by))
 
-    old_corner: coords = (wall_obj_corner[0], wall_obj_corner[1]+32)
+    old_corner: coords = (wall_obj_corner[0], wall_obj_corner[1]+wall_obj_size[1])
     collision_results: List[Tuple[coords, bool, float, float] | None] = []
     wall_corner_positions: List[coords] = []
 

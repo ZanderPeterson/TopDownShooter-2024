@@ -1,5 +1,5 @@
 #Initiallises the GameStates
 
-import states.game_state
-import states.main_menu
-import states.play_game
+import src.states.game_state
+import src.states.main_menu
+import src.states.play_game

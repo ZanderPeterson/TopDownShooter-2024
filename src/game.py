@@ -2,8 +2,8 @@
 
 import pygame
 
-from states.main_menu import MainMenuState
-from states.play_game import PlayGameState
+from src.states.main_menu import MainMenuState
+from src.states.play_game import PlayGameState
 
 class Game():
     """A Class intended to handle game related functions."""

@@ -27,13 +27,13 @@ class PlayGameState(GameState):
             3: False, #Right Click
         }
         self.constants: Dict[str, Any] = {
-            "forward_speed": 3,
-            "backward_speed": 3,
-            "sideways_speed": 3,
-            "bullet_speed": 5,
-            "fire_rate": 60,
-            "enemy_fire_rate": 60*4,
-            "spawn_rate": 60*10,
+            "forward_speed": 4,
+            "backward_speed": 4,
+            "sideways_speed": 4,
+            "bullet_speed": 8,
+            "fire_rate": 30,
+            "enemy_fire_rate": 60*2.5,
+            "spawn_rate": 60*3,
         }
         self.game_variables: Dict[str, Any] = {}
         self.enemy_spawn_locations: List[Tuple[bool, coords]] = []
@@ -42,20 +42,32 @@ class PlayGameState(GameState):
         self.walls: List[WallObject] = []
         self.font: pygame.font.FontType = pygame.font.Font(None, 50)
 
-        self.walls.append(WallObject((0, 0)))
-        for i in range(1, 25):
-            self.walls.append(WallObject.right_of_wall(self.walls[-1]))
-        for i in range(1, 20):
-            self.walls.append(WallObject.below_wall(self.walls[-1]))
-        for i in range(1, 25):
-            self.walls.append(WallObject.left_of_wall(self.walls[-1]))
-        for i in range(1, 20):
-            self.walls.append(WallObject.above_wall(self.walls[-1]))
+        #Corners
+        self.walls.append(WallObject(start_pos=(0, 0)))
+        self.walls.append(WallObject(start_pos=(0, 608)))
+        self.walls.append(WallObject(start_pos=(768, 0)))
+        self.walls.append(WallObject(start_pos=(768, -608)))
+
+        #Main Walls
+        self.walls.append(WallObject(start_pos=(0, -768),
+                                     image="wall_800x800.png"))
+        self.walls.append(WallObject(start_pos=(0, 608),
+                                     image="wall_800x800.png"))
+        self.walls.append(WallObject(start_pos=(768, 0),
+                                     image="wall_800x800.png"))
+        self.walls.append(WallObject(start_pos=(-768, 0),
+                                     image="wall_800x800.png"))
+
+        #Middle Island/Wall
+        self.walls.append(WallObject(start_pos=(250, 270),
+                                     image="wall_100x100.png"))
+        self.walls.append(WallObject(start_pos=(350, 270),
+                                     image="wall_100x100.png"))
+        self.walls.append(WallObject(start_pos=(450, 270),
+                                     image="wall_100x100.png"))
 
     @override
     def enter(self) -> None:
-        print("Entering the Play Game state.")
-
         for key in self.track_keys.keys():
             self.track_keys[key] = False
 
@@ -66,12 +78,16 @@ class PlayGameState(GameState):
             "score": 0,
             "time_before_next_shot": 0,
             "time_before_next_spawn": 0,
-            "health": 10,
+            "health": 8,
         }
 
         self.enemy_spawn_locations = [
-            (False, (400, 400)),
-            (False, (200, 200)),
+            (False, (200-16, 160-16)),
+            (False, (400-16, 160-16)),
+            (False, (600-16, 160-16)),
+            (False, (200-16, 480-16)),
+            (False, (400-16, 480-16)),
+            (False, (600-16, 480-16))
         ]
 
         self.entities = {}
@@ -85,7 +101,7 @@ class PlayGameState(GameState):
 
     @override
     def exit(self) -> None:
-        print("Exiting the Play Game state.")
+        pass
 
     @override
     def update(self) -> None | str:
@@ -148,7 +164,7 @@ class PlayGameState(GameState):
                 #Enemy is actually something else, like the player
                 continue
             enemy.update()
-            enemy.aim_in_direction(self.entities["player"].get_centre_position())
+            enemy.aim_in_direction(self.entities["player"].position)
             if enemy.check_if_shot_allowed():
                 new_bullet: BulletObject = BulletObject(rotation=enemy.find_direction_to_shoot(),
                                                         speed=self.constants["bullet_speed"],
@@ -211,7 +227,6 @@ class PlayGameState(GameState):
 
         # Check player health
         if self.game_variables["health"] <= 0:
-            print(self.game_variables["score"])
             return "GameOver"
 
     @override
@@ -231,13 +246,13 @@ class PlayGameState(GameState):
         for wall in self.walls:
             window.blit(wall.render_image(), wall.get_image_position())
 
-        score_text = self.font.render(f"Score: {self.game_variables["score"]}", True, (255, 255, 255))
-        health_text = self.font.render(f"Health: {self.game_variables["health"]}", True, (255, 255, 255))
-        window.blit(score_text, (400 - score_text.get_size()[0]/2, 280 - score_text.get_size()[1]/2))
-        window.blit(health_text, (400 - health_text.get_size()[0] / 2, 320 - health_text.get_size()[1] / 2))
+        score_text = self.font.render(f"Score: {self.game_variables["score"]}", True, (254, 255, 240))
+        health_text = self.font.render(f"Health: {self.game_variables["health"]}", True, (254, 255, 240))
+        window.blit(score_text, (400 - score_text.get_size()[0]/2, 300 - score_text.get_size()[1]/2))
+        window.blit(health_text, (400 - health_text.get_size()[0] / 2, 340 - health_text.get_size()[1] / 2))
 
     @override
-    def handle_event(self, event) -> None | str:
+    def handle_event(self, event) -> None:
         #Record down keypresses.
         if event.type == pygame.KEYDOWN and event.key in self.track_keys:
             self.track_keys[event.key] = True

@@ -72,7 +72,16 @@ class BulletObject(GameObject):
         targets_hit: list[GameObject] = []
         for target in targets:
             distance_to_target: float = find_vector_between(self.get_centre_position(), target.get_centre_position())[0]
-            if distance_to_target >= target.img_size[0]:
+
+            #Sets the target radius, which determines the size of the hitbox.
+            #Players get a small advantage with having a slightly smaller hitbox,
+            #Whilst enemies get a small disadvantage with having a slightly bigger one.
+            #Making things more forgiving for players makes the game feel better and fairer.
+            target_radius: float = (target.img_size[0]/2)*1.5
+            if target.tag == "player":
+                target_radius = (target.img_size[0]/2)*0.8
+
+            if distance_to_target >= target_radius:
                 continue
             if (target.tag == self.shot_by or self.shot_by is None) and self.grace_period > 0:
                 #Grace period applies. Target is not hit.
