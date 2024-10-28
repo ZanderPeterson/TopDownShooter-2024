@@ -32,12 +32,13 @@ class PlayGameState(GameState):
             "sideways_speed": 3,
             "bullet_speed": 5,
             "fire_rate": 60,
-            "enemy_fire_rate": 200,
-            "spawn_rate": 60*5,
+            "enemy_fire_rate": 60*4,
+            "spawn_rate": 60*10,
         }
         self.game_variables: Dict[str, Any] = {
             "time_before_next_shot": 0,
             "time_before_next_spawn": 0,
+            "health": 10,
         }
 
         self.entities: Dict[str, GameObject] = {}
