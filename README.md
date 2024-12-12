@@ -6,7 +6,7 @@ The game has been developed and should work. Nice! <br/>
 To run the game, run the 'main.py' file. <br/>
 PyGame will need to be installed. <br/>
 
-Versions:
-Game Version - 1.0
-Python - 3.12.7
-PyGame - 2.6.0 (SDL 2.28.4)
+Versions: <br/>
+Game Version - 1.0 <br/>
+Python - 3.12.7 <br/>
+PyGame - 2.6.0 (SDL 2.28.4) <br/>
